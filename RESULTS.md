@@ -29,9 +29,11 @@ All numbers from real connectome simulations (FlyWire, 138,639 neurons). Full na
 
 ## Visualizations published
 
+- [Sugar neuron cascade](https://claude.ai/code/artifact/a28409c6-1d84-4bbd-9c05-7c0752dbea94) — every spike from the sugar->MN9 replication
 - [Mushroom body memory](https://claude.ai/code/artifact/4271312e-0cff-40a8-b94b-3e84b0eaf7a7) — before/after spatial view of learning
 - [Giant Fiber escape](https://claude.ai/code/artifact/dccecdb7-020e-4bcf-94e3-dc410c2ca4fa) — sub-3ms escape response
 - [Compartment specificity](https://claude.ai/code/artifact/41377e0e-d918-438d-a909-009f0dbebc45) — PPL vs PAM spatial comparison
+- [Looming dose response](https://claude.ai/code/artifact/db64c53b-df84-44b5-bf47-c1cd6593fab2) — graded Giant Fiber response curve
 
 ## Infrastructure fixes made along the way
 

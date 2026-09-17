@@ -9,6 +9,8 @@ Built on [philshiu/Drosophila_brain_model](https://github.com/philshiu/Drosophil
 ### 1. Sensory-to-motor replication
 Driving the 21 real sugar-sensing neurons on the right hemisphere reliably fires **MN9**, the real proboscis-extension motor neuron — the fly's "stick out your tongue for sugar" reflex, reproduced from raw connectome wiring. See [`Drosophila_brain_model/demo_run.py`](Drosophila_brain_model/demo_run.py).
 
+**[→ Watch the cascade](https://claude.ai/code/artifact/a28409c6-1d84-4bbd-9c05-7c0752dbea94)** — every real spike from that simulation, ordered by when each neuron first fired, showing the signal reach MN9 in 30ms.
+
 ### 2. Mushroom body learning
 Added dopamine-gated synaptic plasticity to the real Kenyon cell → MBON synapses — the actual site where fly memories form. Pairing an odor (150 real Kenyon cells) with a punishment signal over 12 trials produces genuine, specific learning:
 
