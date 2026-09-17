@@ -39,7 +39,10 @@ A second, independent circuit: the real looming-detector neurons (LC4, 104 neuro
 ### 4. Optomotor steering reflex
 A fourth independent circuit: real wide-field motion-sensitive neurons (HS/VS, 38 neurons) reliably drive the real descending steering neuron **DNg46** — the real basis of how a fly corrects its course when the whole visual field slides past. 5/5 trials, 3-14ms latency. See [`Drosophila_brain_model/optomotor_steering.py`](Drosophila_brain_model/optomotor_steering.py).
 
-### 5. Dose-response and necessity tests
+### 5. Multi-modal convergence
+A fifth circuit, in a sense not a new one: real wind/vibration-sensing neurons (JO-B, Johnston's organ, 170 neurons) reliably drive a new descending neuron (**DNg29**, 10/10 trials) — but also drive the **same Giant Fiber** already used by the looming circuit (10/10 trials, weaker but consistent). Two completely different senses, vision and mechanosensation, converging on one shared escape command neuron — matching real Drosophila startle-response biology. See [`Drosophila_brain_model/wind_sensing.py`](Drosophila_brain_model/wind_sensing.py).
+
+### 6. Dose-response and necessity tests
 Driving a graded fraction of the real looming detectors (10%→100%) produces a smooth, saturating rise in Giant Fiber firing — real graded population coding, not a binary switch. **[→ See the curve](https://claude.ai/code/artifact/db64c53b-df84-44b5-bf47-c1cd6593fab2)**. Separately, silencing single relay neurons (GF, DNg46) barely moves their "downstream" population's activity (-0.6%, -1.2%) — real network redundancy, since those neurons are also reached through other real parallel pathways. Full details in [`RESULTS.md`](RESULTS.md).
 
 ### 6. Real 3D visualization
