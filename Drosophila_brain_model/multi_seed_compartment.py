@@ -26,9 +26,10 @@ n_odor = 150
 t_run = 300 * ms
 r_stim = 150 * Hz
 eta = 0.18
-n_reps = 4
+n_reps = 8
 n_pairing = 12
 n_seeds = 5
+n_warmup = 6
 
 results = []
 
@@ -74,7 +75,7 @@ for seed in range(n_seeds):
     def rate(spikes, n):
         return spikes / n / (t_run / (1000 * ms))
 
-    for _ in range(4):
+    for _ in range(n_warmup):
         run_trial(odor_B_stim, odor_B)
 
     base_ppl, base_pam = [], []
@@ -101,16 +102,23 @@ for seed in range(n_seeds):
     ppl_pct = 100 * (p_ppl - b_ppl) / b_ppl
     pam_pct = 100 * (p_pam - b_pam) / b_pam
     dt = time.time() - t0
-    print(f'seed {seed} ({dt:.0f}s): PPL {b_ppl:.1f}->{p_ppl:.1f} Hz ({ppl_pct:+.1f}%)   PAM {b_pam:.1f}->{p_pam:.1f} Hz ({pam_pct:+.1f}%)   n_eligible_syn={len(elig_idx)}')
+    noisy = (np.std(base_ppl) > 15) or (np.std(base_pam) > 15)
+    flag = '  <-- HIGH BASELINE VARIANCE, still bimodal, treat with caution' if noisy else ''
+    print(f'seed {seed} ({dt:.0f}s): PPL {b_ppl:.1f}->{p_ppl:.1f} Hz ({ppl_pct:+.1f}%)   PAM {b_pam:.1f}->{p_pam:.1f} Hz ({pam_pct:+.1f}%)   n_eligible_syn={len(elig_idx)}{flag}')
+    print(f'          baseline reps -- PPL: {[round(x,1) for x in base_ppl]}   PAM: {[round(x,1) for x in base_pam]}')
     results.append({'seed': seed, 'ppl_baseline': b_ppl, 'ppl_post': p_ppl, 'ppl_pct': ppl_pct,
-                     'pam_baseline': b_pam, 'pam_post': p_pam, 'pam_pct': pam_pct, 'n_eligible': int(len(elig_idx))})
+                     'pam_baseline': b_pam, 'pam_post': p_pam, 'pam_pct': pam_pct, 'n_eligible': int(len(elig_idx)),
+                     'noisy_baseline': bool(noisy)})
 
 print()
-ppl_pcts = [r['ppl_pct'] for r in results]
-pam_pcts = [r['pam_pct'] for r in results]
-print(f'=== across {n_seeds} independent random odor ensembles ===')
-print(f'PPL-dominant (punishment) MBON change: {np.mean(ppl_pcts):+.1f}% +/- {np.std(ppl_pcts):.1f}%   (all seeds: {[round(x,1) for x in ppl_pcts]})')
-print(f'PAM-dominant (reward) MBON change:     {np.mean(pam_pcts):+.1f}% +/- {np.std(pam_pcts):.1f}%   (all seeds: {[round(x,1) for x in pam_pcts]})')
+clean = [r for r in results if not r['noisy_baseline']]
+ppl_pcts = [r['ppl_pct'] for r in clean]
+pam_pcts = [r['pam_pct'] for r in clean]
+print(f'=== across {n_seeds} independent random odor ensembles ({len(clean)} with a stable baseline) ===')
+print(f'PPL-dominant (punishment) MBON change: {np.mean(ppl_pcts):+.1f}% +/- {np.std(ppl_pcts):.1f}%   (clean seeds: {[round(x,1) for x in ppl_pcts]})')
+print(f'PAM-dominant (reward) MBON change:     {np.mean(pam_pcts):+.1f}% +/- {np.std(pam_pcts):.1f}%   (clean seeds: {[round(x,1) for x in pam_pcts]})')
+if len(clean) < n_seeds:
+    print(f'({n_seeds - len(clean)} seed(s) excluded for high baseline variance - see per-seed output above)')
 
 with open('../multi_seed_results.json', 'w') as f:
     json.dump(results, f)

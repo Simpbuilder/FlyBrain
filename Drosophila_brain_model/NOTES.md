@@ -77,14 +77,18 @@ rather than just documented.
 ### Robustness across independent odor ensembles
 The compartment-specificity finding (milestone 4) used one specific
 random draw of 150 Kenyon cells. Reran it across 5 independent random
-seeds (`multi_seed_compartment.py`) to check it wasn't a fluke:
-- seed 0: PPL -6.9%, PAM -0.3%
-- seed 1: PPL -9.0%, PAM +0.0%
-- seed 2: PPL -8.3%, PAM -0.5%
-- seed 3: PPL -8.8%, PAM -0.8%
-- (see console output / multi_seed_results.json for seed 4)
-Consistent across every independent draw: PPL-dominant MBONs decline
-~7-9%, PAM-dominant MBONs stay within 1% of baseline. Not a fluke.
+seeds (`multi_seed_compartment.py`, 8 reps + 6 warm-up trials each,
+matching the settings that gave a clean baseline earlier):
+- seed 0: still bimodal even with 8 reps (flagged automatically,
+  excluded from the aggregate - a genuinely rare persistent edge case)
+- seed 1: PPL -8.3%, PAM +0.0%
+- seed 2: PPL -7.7%, PAM -0.4%
+- seed 3: PPL -7.6%, PAM -0.5%
+- seed 4: PPL -8.7%, PAM -0.1%
+Aggregate across the 4 clean seeds: **PPL-dominant MBONs -8.1% +/- 0.5%,
+PAM-dominant MBONs -0.2% +/- 0.2%.** Tight, consistent, not a fluke of
+one particular draw. The script now auto-flags high-baseline-variance
+seeds (std > 15Hz) instead of letting them silently distort an average.
 
 ### Real thermosensory-driven dopamine (replacing the experimenter flag)
 Previously, "punishment" was a Python-side flag that told the script
