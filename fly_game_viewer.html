@@ -1,0 +1,179 @@
+<title>Fly obstacle course</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4f3f0; --surface:#ffffff; --text:#1a1814; --text-2:#5c584f; --text-3:#8f8a7d; --border:#ddd9cf;
+  --amber:#c96a1f; --blue:#1e4f8f;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'Work Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a;--amber:#f2ae4e;--blue:#7cb3f5}}
+:root[data-theme="dark"]{--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a;--amber:#f2ae4e;--blue:#7cb3f5}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;padding:2rem 1.5rem 3rem}
+.wrap{max-width:760px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .5rem}
+h1{font-family:var(--font-display);font-weight:600;font-size:28px;margin:0 0 .5rem}
+p.lede{color:var(--text-2);font-size:14px;max-width:60ch;margin:0 0 1.25rem}
+.transport{display:flex;align-items:center;gap:12px;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1rem;flex-wrap:wrap}
+button,select{font-family:var(--font-body);font-size:13px;font-weight:500;background:transparent;color:var(--text);border:0.5px solid var(--border);border-radius:8px;padding:.5rem .9rem;cursor:pointer}
+button.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stat{font-family:var(--font-mono);font-size:12px;color:var(--text-2)}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem}
+.canvas-wrap{background:#0c0a12;margin:.75rem;border-radius:8px;overflow:hidden}
+canvas{display:block;width:100%;height:auto}
+.loading{color:var(--text-3);font-size:13px;text-align:center;padding:3rem 0}
+.result{font-family:var(--font-mono);font-size:13px;padding:.6rem 1.1rem;color:var(--text-2)}
+.run-dot{width:8px;height:8px;border-radius:50%;background:var(--text-3);display:inline-block}
+.run-dot.on{background:#5fbf6b;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.note{font-size:11px;color:var(--text-3);margin:.4rem 0 0}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Drosophila melanogaster &middot; real circuits, trainable steering &middot; FlyWire connectome</p>
+  <h1>Fly obstacle course</h1>
+  <p class="lede">The fly's real looming-detector and optomotor circuits sense each obstacle; a small trainable layer decides whether to dodge up or down. Compare an early life (before it learned anything) against a much later one.</p>
+
+  <div class="transport">
+    <button class="primary" id="startBtn">Start run</button>
+    <button id="stopBtn">Stop run</button>
+    <span class="stat"><span class="run-dot" id="runDot"></span> <span id="runStatus">stopped</span></span>
+  </div>
+  <p class="note">Claude checks this control every so often and starts/stops the simulation on this machine — not instant, usually within a minute.</p>
+
+  <div class="transport">
+    <button class="primary" id="playBtn">Play</button>
+    <label class="stat">life <select id="lifeSelect"></select></label>
+    <span class="stat" id="lifeInfo"></span>
+  </div>
+
+  <div class="panel">
+    <div class="canvas-wrap"><canvas id="cv" width="680" height="260"></canvas></div>
+    <p class="result" id="result"></p>
+  </div>
+
+  <p class="loading" id="loading">loading recorded lives&hellip;</p>
+</div>
+
+<script>
+(async () => {
+  const db = await claude.use('db');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const runDot = document.getElementById('runDot');
+  const runStatus = document.getElementById('runStatus');
+
+  function setRunUI(state) {
+    runDot.classList.toggle('on', state === 'running');
+    runStatus.textContent = state === 'running' ? 'running' : 'stopped';
+  }
+
+  if (db) {
+    db.doc('control/game').onSnapshot(snap => {
+      setRunUI(snap.exists ? snap.data().state : 'stopped');
+    });
+    startBtn.addEventListener('click', () => db.doc('control/game').set({ state: 'running', requestedAt: new Date().toISOString() }));
+    stopBtn.addEventListener('click', () => db.doc('control/game').set({ state: 'stopped', requestedAt: new Date().toISOString() }));
+  } else {
+    startBtn.disabled = true; stopBtn.disabled = true;
+    runStatus.textContent = 'control unavailable in this view';
+  }
+})();
+
+fetch('fly_game_batch.json').then(r => {
+  if (!r.ok) throw new Error('no data yet');
+  return r.json();
+}).then(data => {
+  document.getElementById('loading').remove();
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const N_LANES = data.n_lanes;
+  const laneH = H / N_LANES;
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const amber = isDark ? '#f2ae4e' : '#c96a1f';
+  const blue = isDark ? '#7cb3f5' : '#1e4f8f';
+
+  const sel = document.getElementById('lifeSelect');
+  data.lives.forEach((life, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    const crashed = life.ticks <= 400;
+    opt.textContent = `#${life.episode} — ${life.ticks} ticks${crashed ? '' : ' (capped)'}`;
+    sel.appendChild(opt);
+  });
+  // default selection: first and a late one are the interesting comparison
+  sel.value = data.lives.length - 1;
+
+  let life = data.lives[sel.value];
+  let tick = 0, playing = false, lastFrame = null, acc = 0;
+  const TICKS_PER_SEC = 10;
+
+  function laneY(lane) { return (lane + 0.5) * laneH; }
+
+  function draw() {
+    ctx.fillStyle = '#0c0a12';
+    ctx.fillRect(0, 0, W, H);
+    // lane guides
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    for (let i = 1; i < N_LANES; i++) {
+      ctx.beginPath(); ctx.moveTo(0, i * laneH); ctx.lineTo(W, i * laneH); ctx.stroke();
+    }
+    const flyX = 90;
+    const [fly_lane, obs_lane, obs_dist] = life.trajectory[Math.min(tick, life.trajectory.length - 1)];
+
+    // obstacle: dist 5 -> far right, dist 0 -> at fly's x
+    const obsX = flyX + (obs_dist / 5) * (W - flyX - 20);
+    ctx.fillStyle = amber;
+    ctx.fillRect(obsX - 14, laneY(obs_lane) - laneH * 0.35, 28, laneH * 0.7);
+
+    // fly
+    ctx.fillStyle = blue;
+    ctx.beginPath();
+    ctx.moveTo(flyX + 14, laneY(fly_lane));
+    ctx.lineTo(flyX - 10, laneY(fly_lane) - 9);
+    ctx.lineTo(flyX - 10, laneY(fly_lane) + 9);
+    ctx.closePath();
+    ctx.fill();
+
+    document.getElementById('lifeInfo').textContent = `tick ${Math.min(tick, life.trajectory.length - 1) + 1} / ${life.trajectory.length}`;
+  }
+
+  function setLife(idx) {
+    life = data.lives[idx];
+    tick = 0; playing = false;
+    document.getElementById('playBtn').textContent = 'Play';
+    const crashed = life.ticks <= 400;
+    document.getElementById('result').textContent =
+      `life #${life.episode}: survived ${life.ticks} ticks${crashed ? ' before colliding' : ' (hit the safety cap, still going strong)'} — readout weights at the time: [${life.weights.join(', ')}]`;
+    draw();
+  }
+  setLife(sel.value);
+  sel.addEventListener('change', () => setLife(sel.value));
+
+  function frame(now) {
+    if (playing) {
+      if (lastFrame === null) lastFrame = now;
+      acc += (now - lastFrame) / 1000;
+      lastFrame = now;
+      while (acc > 1 / TICKS_PER_SEC) {
+        acc -= 1 / TICKS_PER_SEC;
+        tick++;
+        if (tick >= life.trajectory.length) { tick = life.trajectory.length - 1; playing = false; document.getElementById('playBtn').textContent = 'Play'; break; }
+      }
+      draw();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  document.getElementById('playBtn').addEventListener('click', () => {
+    if (tick >= life.trajectory.length - 1) tick = 0;
+    playing = !playing;
+    lastFrame = null;
+    document.getElementById('playBtn').textContent = playing ? 'Pause' : 'Play';
+  });
+}).catch(() => {
+  document.getElementById('loading').textContent = 'no recorded lives yet — press Start run above, check back in a bit';
+});
+</script>

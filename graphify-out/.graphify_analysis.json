@@ -2,44 +2,98 @@
   "communities": {
     "0": [
       "brian2",
-      "drosophila_brain_model_debug_stim",
-      "drosophila_brain_model_debug_stim2",
-      "drosophila_brain_model_debug_stim3",
-      "drosophila_brain_model_debug_stim4",
-      "drosophila_brain_model_debug_stim5",
-      "numpy",
-      "pandas",
+      "drosophila_brain_model_debugging_history_debug_stim",
+      "drosophila_brain_model_debugging_history_debug_stim4",
+      "drosophila_brain_model_debugging_history_debug_stim5",
+      "drosophila_brain_model_dng46_necessity_test",
+      "drosophila_brain_model_dng46_necessity_test_run_trial",
+      "drosophila_brain_model_dose_response",
+      "drosophila_brain_model_dose_response_run_trial",
+      "drosophila_brain_model_multi_seed_compartment",
+      "drosophila_brain_model_multi_seed_compartment_rate",
+      "drosophila_brain_model_multi_seed_compartment_run_trial",
+      "drosophila_brain_model_optomotor_steering",
+      "drosophila_brain_model_optomotor_steering_run_trial",
       "textwrap"
     ],
     "1": [
+      "drosophila_brain_model_competing_stimuli",
+      "drosophila_brain_model_competing_stimuli_run_trial",
       "drosophila_brain_model_demo_run",
+      "drosophila_brain_model_gf_necessity_test",
+      "drosophila_brain_model_gf_necessity_test_run_trial",
       "drosophila_brain_model_model",
       "drosophila_brain_model_model_construct_dataframe",
-      "drosophila_brain_model_model_rationale_215",
-      "drosophila_brain_model_model_rationale_299",
-      "drosophila_brain_model_model_run_exp",
-      "joblib",
-      "pathlib",
-      "time"
-    ],
-    "2": [
       "drosophila_brain_model_model_get_spk_trn",
       "drosophila_brain_model_model_poi",
       "drosophila_brain_model_model_rationale_109",
       "drosophila_brain_model_model_rationale_193",
+      "drosophila_brain_model_model_rationale_215",
       "drosophila_brain_model_model_rationale_251",
+      "drosophila_brain_model_model_rationale_299",
       "drosophila_brain_model_model_rationale_59",
+      "drosophila_brain_model_model_run_exp",
       "drosophila_brain_model_model_run_trial",
-      "drosophila_brain_model_model_silence"
+      "drosophila_brain_model_model_silence",
+      "drosophila_brain_model_notes_milestone_8_necessity_and_integration_tests",
+      "drosophila_brain_model_sparsity_sweep",
+      "drosophila_brain_model_sparsity_sweep_run_trial",
+      "joblib",
+      "pathlib"
+    ],
+    "2": [
+      "drosophila_brain_model_notes",
+      "readme",
+      "readme_1_sensory_to_motor_replication",
+      "readme_2_mushroom_body_learning",
+      "readme_3_looming_escape_reflex",
+      "readme_4_optomotor_steering_reflex",
+      "readme_5_multi_modal_convergence",
+      "readme_6_dose_response_and_necessity_tests",
+      "readme_6_real_3d_visualization",
+      "readme_flybrain",
+      "readme_how_it_s_built",
+      "readme_what_s_in_here",
+      "results",
+      "results_circuit_replications_innate_reflexes",
+      "results_infrastructure_fixes_made_along_the_way",
+      "results_mushroom_body_learning_dopamine_gated_plasticity",
+      "results_necessity_and_integration_tests",
+      "results_results_summary",
+      "results_visualizations_published"
     ],
     "3": [
+      "collections",
+      "csv",
+      "drosophila_brain_model_add_z_coords",
+      "drosophila_brain_model_add_z_coords_enrich",
+      "drosophila_brain_model_debugging_history_debug_stim2",
+      "drosophila_brain_model_ensemble_sweep",
       "drosophila_brain_model_learn_mushroom_body",
       "drosophila_brain_model_learn_mushroom_body_mbon_rate",
-      "drosophila_brain_model_learn_mushroom_body_rationale_80",
+      "drosophila_brain_model_learn_mushroom_body_rationale_85",
       "drosophila_brain_model_learn_mushroom_body_run_trial",
-      "drosophila_brain_model_model_create_model",
-      "drosophila_brain_model_model_rationale_130",
-      "json"
+      "drosophila_brain_model_make_silhouette",
+      "drosophila_brain_model_prep_3d_viz",
+      "drosophila_brain_model_prep_3d_viz_process",
+      "drosophila_brain_model_prep_compartment_viz",
+      "drosophila_brain_model_prep_compartment_viz_process",
+      "drosophila_brain_model_prep_looming_viz",
+      "drosophila_brain_model_prep_spatial_viz",
+      "drosophila_brain_model_prep_spatial_viz_process",
+      "drosophila_brain_model_real_sparse_odors",
+      "drosophila_brain_model_real_sparse_odors_sniff",
+      "drosophila_brain_model_sniff_identify",
+      "drosophila_brain_model_sniff_identify_sniff",
+      "drosophila_brain_model_sparsity_grid_search",
+      "drosophila_brain_model_sparsity_grid_search_run_trial",
+      "drosophila_brain_model_thermal_punishment",
+      "drosophila_brain_model_thermal_punishment_rate",
+      "drosophila_brain_model_thermal_punishment_run_trial",
+      "json",
+      "numpy",
+      "os",
+      "pandas"
     ],
     "4": [
       "drosophila_brain_model_utils",
@@ -47,24 +101,143 @@
       "drosophila_brain_model_utils_load_exps",
       "drosophila_brain_model_utils_rationale_33",
       "drosophila_brain_model_utils_rationale_7"
+    ],
+    "5": [
+      "drosophila_brain_model_notes_future_ideas_not_started",
+      "drosophila_brain_model_notes_known_limitations_honest_caveats",
+      "drosophila_brain_model_notes_milestone_10_chasing_the_sparse_coding_fix_further_corrected_conclusion",
+      "drosophila_brain_model_notes_milestone_11_live_dashboard_db_backed_extensible_for_future_sessions",
+      "drosophila_brain_model_notes_milestone_1_clean_learning_statistics",
+      "drosophila_brain_model_notes_milestone_2_spatial_visualization",
+      "drosophila_brain_model_notes_milestone_3_looming_escape_reflex_second_independent_real_circuit",
+      "drosophila_brain_model_notes_milestone_4_literature_comparison",
+      "drosophila_brain_model_notes_milestone_5_closing_the_two_biggest_honest_gaps",
+      "drosophila_brain_model_notes_milestone_6_the_full_closed_loop_and_a_genuine_unresolved_finding",
+      "drosophila_brain_model_notes_milestone_7_one_more_diagnostic_then_stopping_here",
+      "drosophila_brain_model_notes_milestone_9_a_contrast_worth_naming",
+      "drosophila_brain_model_notes_real_pn_driven_odor_input_replacing_hand_picked_kc_ensembles",
+      "drosophila_brain_model_notes_real_thermosensory_driven_dopamine_replacing_the_experimenter_flag",
+      "drosophila_brain_model_notes_robustness_across_independent_odor_ensembles",
+      "drosophila_brain_model_notes_session_notes_extended_autonomous_run"
+    ],
+    "6": [
+      "drosophila_brain_model_adapting_drive_test",
+      "drosophila_brain_model_adapting_drive_test_run_trial",
+      "drosophila_brain_model_debugging_history_debug_stim3",
+      "drosophila_brain_model_full_closed_loop",
+      "drosophila_brain_model_full_closed_loop_rate",
+      "drosophila_brain_model_full_closed_loop_run_trial",
+      "drosophila_brain_model_learn_compartment_specific",
+      "drosophila_brain_model_learn_compartment_specific_rate",
+      "drosophila_brain_model_learn_compartment_specific_run_trial",
+      "drosophila_brain_model_pn_driven_odor",
+      "drosophila_brain_model_pn_driven_odor_run_trial",
+      "drosophila_brain_model_reward_learning",
+      "drosophila_brain_model_reward_learning_rate",
+      "drosophila_brain_model_reward_learning_run_trial",
+      "time"
+    ],
+    "7": [
+      "drosophila_brain_model_dashboard_export",
+      "drosophila_brain_model_dashboard_export_export_for_dashboard",
+      "drosophila_brain_model_dashboard_export_rationale_1",
+      "drosophila_brain_model_dashboard_export_rationale_26",
+      "drosophila_brain_model_debugging_history_readme",
+      "drosophila_brain_model_debugging_history_readme_debugging_history",
+      "drosophila_brain_model_model_create_model",
+      "drosophila_brain_model_model_rationale_130",
+      "drosophila_brain_model_run_for_dashboard",
+      "drosophila_brain_model_run_optomotor_for_dashboard",
+      "drosophila_brain_model_wind_sensing",
+      "drosophila_brain_model_wind_sensing_run_trial"
+    ],
+    "8": [
+      "drosophila_brain_model_readme",
+      "drosophila_brain_model_readme_brian_2_performance",
+      "drosophila_brain_model_readme_dependencies",
+      "drosophila_brain_model_readme_installation",
+      "drosophila_brain_model_readme_model_for_the_drosophila_brain",
+      "drosophila_brain_model_readme_paper",
+      "drosophila_brain_model_readme_quick_start",
+      "drosophila_brain_model_readme_usage",
+      "drosophila_brain_model_readme_version_783",
+      "drosophila_brain_model_readme_via_conda"
+    ],
+    "9": [
+      "drosophila_brain_model_endless_fly_game",
+      "drosophila_brain_model_endless_fly_game_pain",
+      "drosophila_brain_model_endless_fly_game_rationale_1",
+      "drosophila_brain_model_endless_fly_game_rationale_105",
+      "drosophila_brain_model_endless_fly_game_rationale_81",
+      "drosophila_brain_model_endless_fly_game_sense_and_act"
+    ],
+    "10": [
+      "drosophila_brain_model_compartment_capture_spatial",
+      "drosophila_brain_model_compartment_capture_spatial_category_for",
+      "drosophila_brain_model_compartment_capture_spatial_rate",
+      "drosophila_brain_model_compartment_capture_spatial_run_trial"
+    ],
+    "11": [
+      "drosophila_brain_model_learn_and_capture_spatial",
+      "drosophila_brain_model_learn_and_capture_spatial_category_for",
+      "drosophila_brain_model_learn_and_capture_spatial_mbon_rate",
+      "drosophila_brain_model_learn_and_capture_spatial_run_trial"
+    ],
+    "12": [
+      "drosophila_brain_model_looming_escape",
+      "drosophila_brain_model_looming_escape_category_for",
+      "drosophila_brain_model_looming_escape_run_trial"
     ]
   },
   "cohesion": {
-    "0": 0.4166666666666667,
-    "1": 0.3055555555555556,
-    "2": 0.25,
-    "3": 0.2857142857142857,
-    "4": 0.4
+    "0": 0.16483516483516483,
+    "1": 0.11067193675889328,
+    "2": 0.1111111111111111,
+    "3": 0.12258064516129032,
+    "4": 0.4,
+    "5": 0.125,
+    "6": 0.13333333333333333,
+    "7": 0.24242424242424243,
+    "8": 0.2,
+    "9": 0.3333333333333333,
+    "10": 0.6666666666666666,
+    "11": 0.6666666666666666,
+    "12": 1.0
   },
   "gods": [
+    {
+      "id": "drosophila_brain_model_model_create_model",
+      "label": "create_model()",
+      "degree": 31
+    },
+    {
+      "id": "drosophila_brain_model_notes_session_notes_extended_autonomous_run",
+      "label": "Session notes: extended autonomous run",
+      "degree": 14
+    },
+    {
+      "id": "readme_what_s_in_here",
+      "label": "What's in here",
+      "degree": 8
+    },
     {
       "id": "drosophila_brain_model_model_run_trial",
       "label": "run_trial()",
       "degree": 7
     },
     {
-      "id": "drosophila_brain_model_model_create_model",
-      "label": "create_model()",
+      "id": "drosophila_brain_model_dashboard_export_export_for_dashboard",
+      "label": "export_for_dashboard()",
+      "degree": 6
+    },
+    {
+      "id": "results_results_summary",
+      "label": "Results summary",
+      "degree": 6
+    },
+    {
+      "id": "drosophila_brain_model_readme_installation",
+      "label": "Installation",
       "degree": 6
     },
     {
@@ -73,80 +246,86 @@
       "degree": 5
     },
     {
-      "id": "drosophila_brain_model_model_construct_dataframe",
-      "label": "construct_dataframe()",
-      "degree": 3
-    },
-    {
-      "id": "drosophila_brain_model_model_get_spk_trn",
-      "label": "get_spk_trn()",
-      "degree": 3
-    },
-    {
-      "id": "drosophila_brain_model_model_poi",
-      "label": "poi()",
-      "degree": 3
-    },
-    {
       "id": "drosophila_brain_model_model_silence",
       "label": "silence()",
-      "degree": 3
+      "degree": 4
     },
     {
-      "id": "drosophila_brain_model_learn_mushroom_body_run_trial",
-      "label": "run_trial()",
-      "degree": 2
-    },
-    {
-      "id": "drosophila_brain_model_utils_get_rate",
-      "label": "get_rate()",
-      "degree": 2
-    },
-    {
-      "id": "drosophila_brain_model_utils_load_exps",
-      "label": "load_exps()",
-      "degree": 2
+      "id": "drosophila_brain_model_notes_milestone_5_closing_the_two_biggest_honest_gaps",
+      "label": "Milestone 5: closing the two biggest honest gaps",
+      "degree": 4
     }
   ],
   "surprises": [
     {
-      "source": "run_exp()",
-      "target": "run_trial()",
+      "source": "Milestone 11: live dashboard (db-backed, extensible for future sessions)",
+      "target": "export_for_dashboard()",
       "source_files": [
-        "Drosophila_brain_model/model.py",
+        "Drosophila_brain_model/NOTES.md",
+        "Drosophila_brain_model/dashboard_export.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (code ↔ doc); bridges separate communities; peripheral node `Milestone 11: live dashboard (db-backed, extensible for future sessions)` unexpectedly reaches hub `export_for_dashboard()`"
+    },
+    {
+      "source": "Debugging history",
+      "target": "create_model()",
+      "source_files": [
+        "Drosophila_brain_model/debugging_history/README.md",
         "Drosophila_brain_model/model.py"
       ],
       "confidence": "INFERRED",
-      "relation": "indirect_call",
-      "note": "Bridges community 1 → community 2"
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (code ↔ doc); peripheral node `Debugging history` unexpectedly reaches hub `create_model()`"
     },
     {
-      "source": "run_trial()",
-      "target": "create_model()",
+      "source": "Milestone 8: necessity and integration tests",
+      "target": "silence()",
       "source_files": [
-        "Drosophila_brain_model/model.py",
+        "Drosophila_brain_model/NOTES.md",
         "Drosophila_brain_model/model.py"
       ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "note": "Bridges community 2 → community 3"
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (code ↔ doc)"
     }
   ],
   "questions": [
     {
       "type": "bridge_node",
-      "question": "Why does `run_trial()` connect `run_trial` to `model.py`, `learn_mushroom_body.py`?",
-      "why": "High betweenness centrality (0.084) - this node is a cross-community bridge."
+      "question": "Why does `Session notes: extended autonomous run` connect `Session notes: extended autonomous run` to `model.py`, `What's in here`?",
+      "why": "High betweenness centrality (0.330) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `run_exp()` connect `model.py` to `run_trial`?",
-      "why": "High betweenness centrality (0.070) - this node is a cross-community bridge."
+      "question": "Why does `Milestone 8: necessity and integration tests` connect `model.py` to `Session notes: extended autonomous run`?",
+      "why": "High betweenness centrality (0.229) - this node is a cross-community bridge."
     },
     {
-      "type": "bridge_node",
-      "question": "Why does `create_model()` connect `learn_mushroom_body.py` to `brian2`, `model.py`, `run_trial`?",
-      "why": "High betweenness centrality (0.069) - this node is a cross-community bridge."
+      "type": "isolated_nodes",
+      "question": "What connects `1. Sensory-to-motor replication`, `2. Mushroom body learning`, `3. Looming-escape reflex` to the rest of the system?",
+      "why": "34 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `model.py` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.11067193675889328 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `What's in here` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `numpy` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12258064516129032 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Session notes: extended autonomous run` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.125 - nodes in this community are weakly interconnected."
     }
   ]
 }

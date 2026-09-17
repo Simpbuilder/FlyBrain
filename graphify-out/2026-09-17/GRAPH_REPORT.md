@@ -1,7 +1,9 @@
 # Graph Report - Sigma  (2026-09-17)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 70 files · ~6,539,477 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 22 file(s) not represented in the graph (top: .parquet 10, .csv 5, (none) 3)
 
 ## Summary
 - 162 nodes · 343 edges · 13 communities (8 shown, 5 thin omitted)
@@ -34,8 +36,8 @@
 3. `What's in here` - 8 edges
 4. `run_trial()` - 7 edges
 5. `export_for_dashboard()` - 6 edges
-6. `Results summary` - 6 edges
-7. `Installation` - 6 edges
+6. `Installation` - 6 edges
+7. `Results summary` - 6 edges
 8. `run_exp()` - 5 edges
 9. `silence()` - 4 edges
 10. `Milestone 5: closing the two biggest honest gaps` - 4 edges
@@ -86,7 +88,7 @@ Cohesion: 0.33
 Nodes (5): pain(), Endless fly survival game, driven by the real connectome. World: 5 discrete…, Fire the real thermosensory pathway - the aversive/failure signal., One game tick: drive real sensors based on world state, run the brain briefly,…, sense_and_act()
 
 ## Knowledge Gaps
-- **34 isolated node(s):** `1. Sensory-to-motor replication`, `2. Mushroom body learning`, `3. Looming-escape reflex`, `4. Optomotor steering reflex`, `5. Multi-modal convergence` (+29 more)
+- **34 isolated node(s):** `Future ideas (not started)`, `Milestone 1: clean learning statistics`, `Milestone 2: spatial visualization`, `Milestone 3: looming-escape reflex (second independent real circuit)`, `Milestone 4: literature comparison` (+29 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 83 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -97,7 +99,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.330) - this node is a cross-community bridge._
 - **Why does `Milestone 8: necessity and integration tests` connect `model.py` to `Session notes: extended autonomous run`?**
   _High betweenness centrality (0.229) - this node is a cross-community bridge._
-- **What connects `1. Sensory-to-motor replication`, `2. Mushroom body learning`, `3. Looming-escape reflex` to the rest of the system?**
+- **What connects `Future ideas (not started)`, `Milestone 1: clean learning statistics`, `Milestone 2: spatial visualization` to the rest of the system?**
   _34 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `model.py` be split into smaller, more focused modules?**
   _Cohesion score 0.11067193675889328 - nodes in this community are weakly interconnected._
