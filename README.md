@@ -4,6 +4,8 @@ A simulation of a real fruit fly brain — 138,639 neurons and 15 million synaps
 
 Built on [philshiu/Drosophila_brain_model](https://github.com/philshiu/Drosophila_brain_model), the code released alongside Shiu et al. 2024, *Nature*, "A leaky integrate-and-fire computational model based on the connectome of the entire adult Drosophila brain."
 
+**[→ Visualization gallery](https://claude.ai/code/artifact/e24ed183-6b60-4a34-84e5-cf4a0dc1705f)** — all five views in one place.
+
 ## What's in here
 
 ### 1. Sensory-to-motor replication

@@ -1,0 +1,50 @@
+<title>FlyBrain gallery</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4f3f0; --surface:#ffffff; --text:#1a1814; --text-2:#5c584f; --text-3:#8f8a7d; --border:#ddd9cf;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'Work Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a}}
+:root[data-theme="dark"]{--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;padding:2.5rem 1.5rem 3.5rem}
+.wrap{max-width:900px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .6rem}
+h1{font-family:var(--font-display);font-weight:600;font-size:32px;margin:0 0 .5rem}
+p.lede{color:var(--text-2);font-size:15px;max-width:65ch;margin:0 0 2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+a.card{display:block;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem 1.4rem;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--text-3)}
+.card-title{font-family:var(--font-display);font-weight:600;font-size:17px;margin:0 0 .4rem}
+.card-desc{font-size:13px;color:var(--text-2);line-height:1.5;margin:0}
+.foot{font-family:var(--font-mono);font-size:12px;color:var(--text-3);margin-top:2rem}
+</style>
+<div class="wrap">
+  <p class="eyebrow">A real fly brain, simulated &middot; 138,639 neurons &middot; FlyWire connectome</p>
+  <h1>FlyBrain gallery</h1>
+  <p class="lede">Five views into the same simulation, built up over one session: real neurons, real wiring, real spikes.</p>
+  <div class="grid">
+    <a class="card" href="https://claude.ai/code/artifact/a28409c6-1d84-4bbd-9c05-7c0752dbea94">
+      <p class="card-title">Sugar neuron cascade</p>
+      <p class="card-desc">Every spike from stimulating real sugar-sensing neurons, reaching the proboscis motor neuron MN9 in 30ms.</p>
+    </a>
+    <a class="card" href="https://claude.ai/code/artifact/4271312e-0cff-40a8-b94b-3e84b0eaf7a7">
+      <p class="card-title">Mushroom body memory</p>
+      <p class="card-desc">Before/after spatial view of dopamine-gated learning — watch the real output neurons dim over 12 trials.</p>
+    </a>
+    <a class="card" href="https://claude.ai/code/artifact/dccecdb7-020e-4bcf-94e3-dc410c2ca4fa">
+      <p class="card-title">Giant Fiber escape</p>
+      <p class="card-desc">Real looming detectors trigger the real escape-command neuron in under 3 milliseconds.</p>
+    </a>
+    <a class="card" href="https://claude.ai/code/artifact/41377e0e-d918-438d-a909-009f0dbebc45">
+      <p class="card-title">Compartment specificity</p>
+      <p class="card-desc">Punishment-associated output neurons dim; reward-associated ones don't move — confirmed across 5 seeds.</p>
+    </a>
+    <a class="card" href="https://claude.ai/code/artifact/db64c53b-df84-44b5-bf47-c1cd6593fab2">
+      <p class="card-title">Looming dose response</p>
+      <p class="card-desc">A smooth, saturating curve as more looming detectors are driven — graded coding, not a binary switch.</p>
+    </a>
+  </div>
+  <p class="foot">github.com/Simpbuilder/FlyBrain &middot; model: Shiu et al. 2024, Nature</p>
+</div>
