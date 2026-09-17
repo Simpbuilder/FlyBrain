@@ -1,0 +1,29 @@
+<title>Looming dose response</title>
+<style>
+:root{--bg:#f4f3f0;--surface:#fff;--text:#1a1814;--text-2:#5c584f;--border:#ddd9cf;--line:#1e4f8f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--border:#38342a;--line:#7cb3f5}}
+:root[data-theme="dark"]{--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--border:#38342a;--line:#7cb3f5}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;margin:0;padding:2rem 1.5rem}
+.wrap{max-width:640px;margin:0 auto}
+h1{font-size:22px;font-weight:500;margin:0 0 .4rem}
+p{color:var(--text-2);font-size:14px;max-width:60ch;margin:0 0 1.5rem}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem}
+</style>
+<div class="wrap">
+  <h1>Giant Fiber dose response</h1>
+  <p>Fraction of the 314 real looming-detector neurons (LC4+LPLC2) driven vs. the real Giant Fiber's spike count, 4 reps per point. A smooth, saturating curve &mdash; not a binary switch.</p>
+  <div class="card"><div style="position:relative;height:280px"><canvas id="c" role="img" aria-label="Line chart: Giant Fiber spike count rising and saturating as the fraction of looming detectors driven increases from 10% to 100%">10%: 35.5, 25%: 60.2, 40%: 71.0, 55%: 82.8, 70%: 89.8, 85%: 96.5, 100%: 101.5 spikes</canvas></div></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+new Chart(document.getElementById('c'), {
+  type: 'line',
+  data: {
+    labels: ['10%','25%','40%','55%','70%','85%','100%'],
+    datasets: [{ data: [35.5,60.2,71.0,82.8,89.8,96.5,101.5], borderColor: '#2a78d6', backgroundColor: 'rgba(42,120,214,0.1)', fill: true, tension: 0.3, pointRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: 'Giant Fiber spikes / trial' } }, x: { title: { display: true, text: '% of looming detectors driven' } } } }
+});
+</script>
