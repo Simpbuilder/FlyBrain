@@ -26,7 +26,7 @@ mbon_idx = sorted(flyid2i[x] for x in mbon_ids if x in flyid2i)
 
 rng = np.random.default_rng(0)
 shuffled = rng.permutation(kc_idx)
-n_odor = 100
+n_odor = 150
 odor_A = shuffled[:n_odor].tolist()          # "punished" odor
 odor_B = shuffled[n_odor:2 * n_odor].tolist()  # control odor, never paired
 
@@ -104,7 +104,7 @@ def mbon_rate(mbon_spikes):
 # single trial is noisy (the mushroom body is a coincidence detector,
 # sensitive to the exact random realization of the Poisson drive)
 # ---------------------------------------------------------------
-n_reps = 5
+n_reps = 8
 probe_rates = {}
 for label, odor, odor_stim in [('A', odor_A, odor_A_stim), ('B', odor_B, odor_B_stim)]:
     reps = []
