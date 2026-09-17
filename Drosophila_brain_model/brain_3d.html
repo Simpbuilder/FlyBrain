@@ -1,0 +1,220 @@
+<title>Fly brain in 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4f3f0; --surface:#ffffff; --text:#1a1814; --text-2:#5c584f; --text-3:#8f8a7d; --border:#ddd9cf;
+  --amber:#ffb648; --blue:#6fb2ff; --teal:#4fd6ba;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'Work Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a}}
+:root[data-theme="dark"]{--bg:#15130f;--surface:#1c1a15;--text:#f1ede3;--text-2:#c2bcac;--text-3:#8a8574;--border:#38342a}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;padding:2.5rem 1.5rem 3.5rem}
+.wrap{max-width:900px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .6rem}
+h1{font-family:var(--font-display);font-weight:600;font-size:32px;margin:0 0 .5rem}
+p.lede{color:var(--text-2);font-size:15px;max-width:65ch;margin:0 0 1.5rem}
+.transport{display:flex;align-items:center;gap:12px;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1rem;flex-wrap:wrap}
+button{font-family:var(--font-body);font-size:13px;font-weight:500;background:transparent;color:var(--text);border:0.5px solid var(--border);border-radius:8px;padding:.5rem .9rem;cursor:pointer}
+button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+input[type=range]{flex:1;min-width:120px}
+.tmono{font-family:var(--font-mono);font-size:12px;color:var(--text-2);min-width:64px;text-align:right}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem}
+#scene{display:block;width:100%;height:520px;cursor:grab;touch-action:none}
+#scene:active{cursor:grabbing}
+.hint{font-family:var(--font-mono);font-size:11px;color:var(--text-3);text-align:center;padding:.5rem 0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-2);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Drosophila melanogaster &middot; real 3D neuron positions &middot; FlyWire connectome</p>
+  <h1>Fly brain in 3D</h1>
+  <p class="lede">The same compartment-specificity result as before &mdash; punishment-associated MBONs (blue) dimming while reward-associated ones (teal) don't &mdash; but now in real 3D space, using the actual depth coordinate that was flattened out of every earlier view. Drag to rotate, scroll to zoom.</p>
+
+  <div class="transport">
+    <button id="playBtn">Play</button>
+    <button id="beforeBtn" class="active">Before</button>
+    <button id="afterBtn">After</button>
+    <input type="range" id="scrub" min="0" max="300" value="0" step="1">
+    <span class="tmono" id="tReadout">0 ms</span>
+  </div>
+
+  <div class="panel">
+    <canvas id="scene"></canvas>
+    <p class="hint">drag to rotate &middot; scroll to zoom</p>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--amber)"></i>odor-A Kenyon cells</span>
+    <span><i class="dot" style="background:var(--blue)"></i>PPL-dominant MBONs</span>
+    <span><i class="dot" style="background:var(--teal)"></i>PAM-dominant MBONs</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+fetch('viz_3d.json').then(r => r.json()).then(data => {
+  const canvas = document.getElementById('scene');
+  const W = canvas.clientWidth || 860, H = 520;
+  canvas.width = W; canvas.height = H;
+
+  const isDark = () => {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  const dark = isDark();
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(dark ? 0x050408 : 0x0c0a12);
+  const camera = new THREE.PerspectiveCamera(45, W / H, 1, 100000);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setSize(W, H);
+
+  const b = data.bounds;
+  const cx = (b.x_min + b.x_max) / 2, cy = (b.y_min + b.y_max) / 2, cz = (b.z_min + b.z_max) / 2;
+  const scale = 400 / Math.max(b.x_max - b.x_min, b.y_max - b.y_min, b.z_max - b.z_min);
+  function toScene(x, y, z) {
+    return new THREE.Vector3((x - cx) * scale, -(y - cy) * scale, (z - cz) * scale);
+  }
+
+  // silhouette point cloud - real neuron positions
+  const silGeo = new THREE.BufferGeometry();
+  const silPos = new Float32Array(data.silhouette.length * 3);
+  data.silhouette.forEach((p, idx) => {
+    const v = toScene(p[0], p[1], p[2]);
+    silPos[idx * 3] = v.x; silPos[idx * 3 + 1] = v.y; silPos[idx * 3 + 2] = v.z;
+  });
+  silGeo.setAttribute('position', new THREE.BufferAttribute(silPos, 3));
+  const silMat = new THREE.PointsMaterial({ color: dark ? 0x9a86ff : 0x6f63c9, size: 1.6, transparent: true, opacity: 0.25 });
+  scene.add(new THREE.Points(silGeo, silMat));
+
+  // highlighted neurons - individual small spheres, color+brightness animated
+  const catColor = { odor_A_kc: 0xffb648, ppl_mbon: 0x6fb2ff, pam_mbon: 0x4fd6ba };
+  const sphereGeo = new THREE.SphereGeometry(2.2, 8, 8);
+  const meshes = {}; // per-panel: nid -> mesh (rebuilt per toggle)
+  let panelData = data.before;
+  let group = new THREE.Group();
+  scene.add(group);
+
+  function buildGroup(pd) {
+    scene.remove(group);
+    group = new THREE.Group();
+    for (const nid in pd.neurons) {
+      const n = pd.neurons[nid];
+      const mat = new THREE.MeshBasicMaterial({ color: catColor[n.cat], transparent: true, opacity: 0.3 });
+      const mesh = new THREE.Mesh(sphereGeo, mat);
+      const v = toScene(n.x, n.y, n.z);
+      mesh.position.copy(v);
+      mesh.userData.nid = parseInt(nid);
+      group.add(mesh);
+      meshes[nid] = mesh;
+    }
+    scene.add(group);
+  }
+  buildGroup(panelData);
+
+  // simple orbit controls: drag to rotate, wheel to zoom
+  let radius = 700, az = 0.6, el = 0.3;
+  let dragging = false, lastX = 0, lastY = 0;
+  function updateCamera() {
+    camera.position.set(radius * Math.cos(el) * Math.sin(az), radius * Math.sin(el), radius * Math.cos(el) * Math.cos(az));
+    camera.lookAt(0, 0, 0);
+  }
+  updateCamera();
+  canvas.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener('pointerup', () => dragging = false);
+  canvas.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    az -= (e.clientX - lastX) * 0.008;
+    el = Math.max(-1.4, Math.min(1.4, el + (e.clientY - lastY) * 0.008));
+    lastX = e.clientX; lastY = e.clientY;
+    updateCamera();
+  });
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    radius = Math.max(150, Math.min(2000, radius + e.deltaY * 0.5));
+    updateCamera();
+  }, { passive: false });
+
+  // playback
+  let playing = false, tMs = 0, lastFrame = null, spikeCursor = 0;
+  const glow = {};
+  const DURATION_MS = 300, PLAYBACK_SECONDS = 6;
+  const scrub = document.getElementById('scrub');
+  const tReadout = document.getElementById('tReadout');
+  const playBtn = document.getElementById('playBtn');
+  const beforeBtn = document.getElementById('beforeBtn');
+  const afterBtn = document.getElementById('afterBtn');
+
+  function resetPlayback() {
+    spikeCursor = 0;
+    for (const k in glow) delete glow[k];
+    for (const nid in meshes) meshes[nid].material.opacity = 0.3;
+  }
+  function setPanel(pd, btn) {
+    playing = false; playBtn.textContent = 'Play';
+    panelData = pd; tMs = 0;
+    beforeBtn.classList.toggle('active', btn === beforeBtn);
+    afterBtn.classList.toggle('active', btn === afterBtn);
+    buildGroup(panelData);
+    resetPlayback();
+    renderAt(0);
+  }
+  beforeBtn.addEventListener('click', () => setPanel(data.before, beforeBtn));
+  afterBtn.addEventListener('click', () => setPanel(data.after, afterBtn));
+
+  function renderAt(t) {
+    while (spikeCursor < panelData.spikes.length && panelData.spikes[spikeCursor][1] <= t) {
+      const [nid, st] = panelData.spikes[spikeCursor];
+      glow[nid] = st;
+      spikeCursor++;
+    }
+    for (const nid in meshes) {
+      const lastT = glow[nid];
+      let bri = 0.3;
+      if (lastT !== undefined) {
+        const age = t - lastT;
+        if (age >= 0) bri = 0.3 + 0.7 * Math.exp(-age / 55);
+      }
+      meshes[nid].material.opacity = bri;
+      const s = 1 + (bri - 0.3) * 1.8;
+      meshes[nid].scale.set(s, s, s);
+    }
+    tReadout.textContent = Math.round(t) + ' ms';
+    scrub.value = Math.round(t);
+    renderer.render(scene, camera);
+  }
+
+  function frame(now) {
+    if (playing) {
+      if (lastFrame === null) lastFrame = now;
+      const dt = now - lastFrame;
+      lastFrame = now;
+      tMs += dt * (DURATION_MS / (PLAYBACK_SECONDS * 1000));
+      if (tMs >= DURATION_MS) { tMs = 0; resetPlayback(); }
+      renderAt(tMs);
+    } else {
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+  }
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) lastFrame = null;
+  });
+  scrub.addEventListener('input', () => {
+    playing = false; playBtn.textContent = 'Play';
+    tMs = Number(scrub.value);
+    resetPlayback();
+    renderAt(tMs);
+  });
+
+  renderAt(0);
+  requestAnimationFrame(frame);
+});
+</script>

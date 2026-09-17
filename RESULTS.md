@@ -34,6 +34,8 @@ All numbers from real connectome simulations (FlyWire, 138,639 neurons). Full na
 - [Giant Fiber escape](https://claude.ai/code/artifact/dccecdb7-020e-4bcf-94e3-dc410c2ca4fa) — sub-3ms escape response
 - [Compartment specificity](https://claude.ai/code/artifact/41377e0e-d918-438d-a909-009f0dbebc45) — PPL vs PAM spatial comparison
 - [Looming dose response](https://claude.ai/code/artifact/db64c53b-df84-44b5-bf47-c1cd6593fab2) — graded Giant Fiber response curve
+- [Fly brain in 3D](https://claude.ai/code/artifact/e5307ac3-ff2a-4017-ad9b-74c53c9a0416) — real rotatable WebGL view, drag to rotate
+- [Gallery](https://claude.ai/code/artifact/e24ed183-6b60-4a34-84e5-cf4a0dc1705f) — all visualizations in one place
 
 ## Infrastructure fixes made along the way
 

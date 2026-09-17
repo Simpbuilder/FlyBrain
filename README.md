@@ -42,6 +42,9 @@ A fourth independent circuit: real wide-field motion-sensitive neurons (HS/VS, 3
 ### 5. Dose-response and necessity tests
 Driving a graded fraction of the real looming detectors (10%→100%) produces a smooth, saturating rise in Giant Fiber firing — real graded population coding, not a binary switch. **[→ See the curve](https://claude.ai/code/artifact/db64c53b-df84-44b5-bf47-c1cd6593fab2)**. Separately, silencing single relay neurons (GF, DNg46) barely moves their "downstream" population's activity (-0.6%, -1.2%) — real network redundancy, since those neurons are also reached through other real parallel pathways. Full details in [`RESULTS.md`](RESULTS.md).
 
+### 6. Real 3D visualization
+Every earlier spatial view flattened the brain's actual depth coordinate into 2D. **[→ Rotate it yourself](https://claude.ai/code/artifact/e5307ac3-ff2a-4017-ad9b-74c53c9a0416)** — a genuine WebGL 3D scene using real x/y/z neuron positions, drag to rotate, scroll to zoom, showing the same compartment-specificity result from an actual 3D perspective.
+
 ## How it's built
 
 - **Simulator:** [Brian2](https://brian2.readthedocs.io/), leaky integrate-and-fire neurons, real synapse counts from EM reconstruction as connection weights.
