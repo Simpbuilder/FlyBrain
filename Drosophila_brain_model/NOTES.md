@@ -161,16 +161,37 @@ wasn't tuned to failure by accident - reducing rate alone doesn't touch
 this because the *reliability* of each spike (not its rate) is what's
 saturating.
 
-**Honestly unresolved.** A real fix needs calibrating the external
-drive to something more like a graded, probabilistic activation of
-real PN neurons (rather than a guaranteed near-instant kick) - a
-legitimate next step, not done here. What IS established: the
-compartment-specificity result (milestone 4/5) doesn't depend on this
-problem at all, since it uses a much sparser hand-picked 150-KC
-ensemble (2.9% of all KCs) that never hits this saturation regime.
-This closed-loop experiment is a genuine, informative negative result
-about what's needed for odor-specific memory, not a contradiction of
-the main finding.
+**Honestly unresolved, and now precisely diagnosed.** Tested whether
+reducing the external drive *weight* (not just rate/duration) would
+help, down to 1/125th of the original value (`sparsity_sweep.py`,
+factor sweep 250->2): made no difference at all - PNs still fired
+46/46 reliably and KC recruitment stayed at ~64-65% even at the
+weakest weight tested. Combined with the earlier rate-independence
+result, this rules out both drive rate and drive weight as the lever.
+The real cause: Kenyon cells have a 20ms membrane time constant and
+are driven by a 150Hz Poisson train sustained for 300ms (~45 events
+per PN, mean inter-event interval ~6.7ms, well under the membrane time
+constant) - almost *any* sufficiently long, sufficiently frequent
+drive will eventually push a KC over threshold through slow temporal
+summation, regardless of the instantaneous multi-glomerulus
+coincidence pattern that's supposed to define real sparse coding. A
+genuine fix isn't a parameter tweak - it needs a fundamentally
+different sensory encoding (a brief adapting burst per PN, the way a
+real odor's onset transient actually looks, rather than a sustained
+Poisson train) or a shorter effective integration window built into
+the plasticity rule itself. Not done here; a legitimate next step for
+a session with more room to restructure the stimulation model.
+
+What IS established: the compartment-specificity result (milestone
+4/5) doesn't depend on this problem at all, since it uses a much
+sparser hand-picked 150-KC ensemble (2.9% of all KCs) that never hits
+this saturation regime. And the PN-driven pathway itself (milestone 5)
+works end-to-end with 100% real neurons and gives a reliable MBON
+readout - it's specifically the *combination* with odor-selective
+learning that exposes this calibration gap. This closed-loop
+experiment is a genuine, informative negative result about what's
+needed for odor-specific memory in a spiking model, not a
+contradiction of the main finding.
 
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet

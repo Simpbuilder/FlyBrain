@@ -22,13 +22,15 @@ print(f'>>> {len(pn_idx)} real PNs across {len(glomeruli)} glomeruli, {len(kc_id
 neu, syn, spk_mon = create_model(config['path_comp'], config['path_con'], params)
 stim = NeuronGroup(len(pn_idx), 'rate : Hz', threshold='rand() < rate*dt', name='stim')
 stim.rate = 0 * Hz
-w_stim = params['w_syn'] * params['f_poi']
+w_stim = params['w_syn'] * params['f_poi']  # placeholder, overwritten per test below
 drive = Synapses(stim, neu, on_pre='v_post += w_stim', name='stim_syn')
 drive.connect(i=np.arange(len(pn_idx)), j=np.array(pn_idx))
 net = Network(neu, syn, spk_mon, stim, drive)
 
 
-def run_trial(rate_hz, dur_ms):
+def run_trial(rate_hz, dur_ms, factor):
+    global w_stim
+    w_stim = params['w_syn'] * factor
     neu.v = params['v_0']
     neu.g = 0 * mV
     stim.rate = 0 * Hz
@@ -37,17 +39,19 @@ def run_trial(rate_hz, dur_ms):
     net.run(dur_ms * ms)
     mask = np.asarray(spk_mon.t / second) >= t_start
     trial_i = np.asarray(spk_mon.i)[mask]
+    pn_fired = np.unique(trial_i[np.isin(trial_i, np.array(pn_idx))])
     kc_fired = np.unique(trial_i[np.isin(trial_i, kc_idx)])
     mbon_spikes = np.isin(trial_i, mbon_idx).sum()
     mbon_rate = mbon_spikes / len(mbon_idx) / (dur_ms / 1000)
-    return len(kc_fired), mbon_rate
+    return len(pn_fired), len(kc_fired), mbon_rate
 
 
 for _ in range(3):
-    run_trial(150, 300)
+    run_trial(150, 300, 250)
 print('>>> warm-up complete\n')
 
-for dur_ms in [5, 10, 20, 40, 80, 150, 300]:
-    n_kc, mbon_rate = run_trial(150, dur_ms)
+print('--- varying external drive weight factor (w_syn * factor), 300ms trial, 150Hz ---')
+for factor in [250, 100, 50, 20, 10, 5, 2]:
+    n_pn, n_kc, mbon_rate = run_trial(150, 300, factor)
     pct = 100 * n_kc / len(kc_idx)
-    print(f'PN rate=150Hz, dur={dur_ms:4d}ms: {n_kc} KCs recruited ({pct:.1f}% of {len(kc_idx)}), MBON pop rate={mbon_rate:.2f} Hz')
+    print(f'factor={factor:4d} (w={0.275*factor:.2f}mV): {n_pn}/{len(pn_idx)} PNs fired, {n_kc} KCs recruited ({pct:.1f}%), MBON rate={mbon_rate:.2f} Hz')
