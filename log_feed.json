@@ -1,5 +1,7 @@
 {"entries": [
   {"t": "08:15", "msg": "live dashboard online — db-backed, updates automatically"},
   {"t": "08:19", "msg": "generated dashboard export pipeline (dashboard_export.py) for future experiments"},
-  {"t": "08:20", "msg": "pushed first live experiment: looming escape (LC4+LPLC2 -> Giant Fiber)"}
+  {"t": "08:20", "msg": "pushed first live experiment: looming escape (LC4+LPLC2 -> Giant Fiber)"},
+  {"t": "08:31", "msg": "pushed: optomotor steering (HS/VS -> DNg46), 40 neurons, 1321 spikes"},
+  {"t": "08:34", "msg": "pushed: wind sensing (JO-B -> DNg29 + Giant Fiber, multi-modal convergence), 172 neurons, 5840 spikes"}
 ]}
