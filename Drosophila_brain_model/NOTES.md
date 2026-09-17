@@ -247,6 +247,28 @@ two specific 4-glomeruli picks just converge on mostly the same
 Stopping the calibration hunt here (per token-budget request) -
 milestone 6's diagnosis stands as the honest final account.
 
+## Milestone 8: necessity and integration tests
+Sufficiency (stimulate X, does Y respond) was the mode for all four
+circuit replications. Added the complementary necessity test (silence
+X, does Y's response to the same drive drop?) using the `silence()`
+function already in `model.py`, unused until now:
+- Silencing the Giant Fiber's outgoing synapses while still driving
+  looming detectors: downstream population activity -0.6% (`gf_necessity_test.py`)
+- Silencing DNg46's outgoing synapses while still driving HS/VS: -1.2%
+  (`dng46_necessity_test.py`)
+Same pattern both times: removing one specific node barely moves its
+"downstream" population's aggregate activity, because those neurons
+are also reached through other real parallel pathways from the same
+sensory input. A real property of a richly recurrent network, not
+noise - single-node necessity for a *population readout* is a much
+higher bar than single-node sufficiency, and this model shows why.
+
+Also tested integration: driving looming and optomotor stimuli
+simultaneously (`competing_stimuli.py`) barely changed either output
+(GF +0.6%, DNg46 -2.2%) - the two circuits are independent, parallel
+channels, matching real biology (escape and optomotor stabilization
+aren't mutually exclusive behaviors a fly has to choose between).
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.
