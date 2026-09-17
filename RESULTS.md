@@ -10,6 +10,13 @@ All numbers from real connectome simulations (FlyWire, 138,639 neurons). Full na
 | Looming → escape | LC4+LPLC2 (314 neurons) | Giant Fiber (DNp01) | 5/5 trials, 1.7-4.0ms latency |
 | Optomotor steering | HS/VS (38 neurons) | DNg46 (steering neuron) | 15/15 trials, 45.9±3.7 spikes, 5.7±2.7ms latency |
 
+## Necessity and integration tests
+
+| Test | Result |
+|---|---|
+| Silence Giant Fiber, drive looming detectors | downstream activity -0.6% (real network redundancy — many parallel pathways) |
+| Drive looming + optomotor simultaneously | GF +0.6%, DNg46 -2.2% (independent, non-competing pathways) |
+
 ## Mushroom body learning (dopamine-gated plasticity)
 
 | Experiment | Result |
