@@ -269,6 +269,27 @@ simultaneously (`competing_stimuli.py`) barely changed either output
 channels, matching real biology (escape and optomotor stabilization
 aren't mutually exclusive behaviors a fly has to choose between).
 
+## Milestone 9: a contrast worth naming
+Two very different response shapes showed up across this session's
+experiments, and they line up with real functional differences
+between the circuit types:
+- **Escape reflex (Giant Fiber):** smooth, graded, saturating curve as
+  more looming detectors are driven (`dose_response.py`) - 35.5 spikes
+  at 10% up to 101.5 at 100%, no sharp transition anywhere.
+- **Mushroom body (KC->MBON):** sharp sigmoidal threshold
+  (`ensemble_sweep.py`, milestone 1) - essentially silent below ~100
+  KCs, a near-coin-flip at 125, fully reliable at 150+.
+That's not a modeling inconsistency - it's the expected signature of
+two different real computations. An escape reflex should respond
+proportionally to threat urgency (more looming = faster/stronger
+response), while a coincidence-detector memory circuit is *supposed*
+to have a sharp threshold (that's what makes it act like a discrete
+"recognized this odor or not" switch rather than a dimmer). Both
+emerged from the same underlying LIF model and the same real
+connectome, just wired differently - which is itself a small piece of
+evidence the model is capturing something real about circuit
+function, not just noise.
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.
