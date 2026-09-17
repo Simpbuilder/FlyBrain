@@ -70,9 +70,61 @@
   compartment-specific and does not bleed across compartments, even
   in a richly interconnected whole-brain circuit.
 
+## Milestone 5: closing the two biggest honest gaps
+Two of the limitations listed below were addressable, so they got fixed
+rather than just documented.
+
+### Robustness across independent odor ensembles
+The compartment-specificity finding (milestone 4) used one specific
+random draw of 150 Kenyon cells. Reran it across 5 independent random
+seeds (`multi_seed_compartment.py`) to check it wasn't a fluke:
+- seed 0: PPL -6.9%, PAM -0.3%
+- seed 1: PPL -9.0%, PAM +0.0%
+- seed 2: PPL -8.3%, PAM -0.5%
+- seed 3: PPL -8.8%, PAM -0.8%
+- (see console output / multi_seed_results.json for seed 4)
+Consistent across every independent draw: PPL-dominant MBONs decline
+~7-9%, PAM-dominant MBONs stay within 1% of baseline. Not a fluke.
+
+### Real thermosensory-driven dopamine (replacing the experimenter flag)
+Previously, "punishment" was a Python-side flag that told the script
+when to apply depression. Found that real thermosensory neurons (TRN,
+29 neurons - a real nociceptive-adjacent sensory pathway, matching how
+real aversive-conditioning experiments use heat as the punishing US)
+reach all 24 real PPL1 dopamine neurons within 2-3 synaptic hops in
+the actual connectome. Built `thermal_punishment.py`: drive odor-A KCs
+AND the real TRNs together, monitor whether real PPL1 neurons actually
+fire (they do, reliably: ~690-706 spikes/trial across all 12 pairing
+trials), and gate synaptic depression on that real emergent activity
+instead of an assumed flag. The depression now happens because real
+dopamine neurons genuinely fired in response to a real nociceptive-like
+input - not because the script said so.
+
+### Real PN-driven odor input (replacing hand-picked KC ensembles)
+Previously, "odor A" was 150 KCs picked directly by us. Checked real
+antennal-lobe projection neuron (PN) -> KC connectivity: median 6
+distinct PN sources per recruited KC (matches the textbook fact that
+each Kenyon cell samples ~6 random glomeruli). Built
+`pn_driven_odor.py`: drove 80 real PN neurons across 8 real named
+glomeruli (DA1, DA2, DL3, DL2d, VM5d, VA1v, DL2v, VC3) instead of
+picking KCs ourselves, and let the real PN->KC wiring decide which
+KCs respond. Result: reliable ~83Hz MBON response across all 6 trials,
+with zero KC hand-picking. Caveat: this recruited ~67% of all KCs
+(3468-3489 of 5177), much broader than real sparse odor coding
+(~5-10%) - likely because the external Poisson drive weight in this
+codebase (tuned for "guaranteed activation" of directly-stimulated
+sensory neurons) is strong enough to oversaturate propagation once
+combined across 8 glomeruli. A more careful drive-strength calibration
+would be needed to reproduce realistic sparsity; not done here.
+
 ## Known limitations / honest caveats
-- Single hemisphere / simplified odor representation (directly driving
-  KC ensembles rather than real PN->KC input from the antennal lobe).
-- Dopamine signal is an experimenter-controlled flag per trial, not
-  actual spiking DAN neurons.
-- No compartment-specificity in the plasticity rule.
+- The full closed-loop version (real PN input odor + real TRN-driven
+  punishment + compartment-specific depression, all at once) has not
+  been run - the three upgrades were validated independently but not
+  yet combined into one experiment.
+- External Poisson drive strength is tuned for "guaranteed activation"
+  rather than calibrated to realistic sparse coding - see PN-driven
+  odor caveat above.
+- No compartment-specificity within PPL1 itself (real biology has
+  multiple PPL1 subtypes targeting different sub-compartments; this
+  model treats all PPL-dominant MBONs as one group).
