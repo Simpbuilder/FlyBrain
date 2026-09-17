@@ -4,7 +4,12 @@ import pandas as pd
 import json
 
 from model import create_model, default_params as params
-from brian2 import Network, NeuronGroup, Synapses, ms, Hz, mV, second, defaultclock
+from brian2 import Network, NeuronGroup, Synapses, ms, Hz, mV, second, defaultclock, seed as brian_seed
+
+# Brian2's own RNG (drives the Poisson-threshold stim mechanism) is
+# separate from numpy's rng - without seeding it, identical scripts can
+# land in different stochastic outcomes run to run. Fixed for reproducibility.
+brian_seed(7)
 
 config = {'path_comp': './Completeness_783.csv', 'path_con': './Connectivity_783.parquet'}
 

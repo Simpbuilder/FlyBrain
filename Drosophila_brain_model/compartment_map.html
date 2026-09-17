@@ -1,0 +1,258 @@
+<title>Compartment specificity</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4f3f0; --surface:#ffffff; --surface-2:#eceae4;
+  --text:#1a1814; --text-2:#5c584f; --text-3:#8f8a7d;
+  --border:#ddd9cf;
+  --amber:#a8650f; --amber-glow:#ffb648;
+  --blue:#1e4f8f; --blue-glow:#6fb2ff;
+  --teal:#0d6b5c; --teal-glow:#4fd6ba;
+  --violet-glow:#9a86ff;
+  --canvas-bg:#0c0a12;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'Work Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15130f; --surface:#1c1a15; --surface-2:#242119;
+    --text:#f1ede3; --text-2:#c2bcac; --text-3:#8a8574;
+    --border:#38342a;
+    --amber:#f2ae4e; --amber-glow:#ffc978;
+    --blue:#7cb3f5; --blue-glow:#9fcbff;
+    --teal:#4fd6ba; --teal-glow:#7ee8d2;
+    --violet-glow:#b3a2ff;
+    --canvas-bg:#050408;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15130f; --surface:#1c1a15; --surface-2:#242119;
+  --text:#f1ede3; --text-2:#c2bcac; --text-3:#8a8574;
+  --border:#38342a;
+  --amber:#f2ae4e; --amber-glow:#ffc978;
+  --blue:#7cb3f5; --blue-glow:#9fcbff;
+  --teal:#4fd6ba; --teal-glow:#7ee8d2;
+  --violet-glow:#b3a2ff;
+  --canvas-bg:#050408;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;padding:2.5rem 1.5rem 3.5rem;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .7rem}
+h1{font-family:var(--font-display);font-weight:600;font-size:34px;margin:0 0 .6rem;text-wrap:balance}
+.lede{font-size:16px;color:var(--text-2);max-width:68ch;margin:0 0 1.75rem}
+.lede b{font-weight:500;color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.15rem}
+.stat .label{font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin:0 0 .4rem}
+.stat .value{font-family:var(--font-mono);font-size:20px;font-variant-numeric:tabular-nums;margin:0}
+.stat .value.down{color:var(--blue)}
+.stat .value.flat{color:var(--teal)}
+.transport{display:flex;align-items:center;gap:14px;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.5rem}
+button.play{font-family:var(--font-body);font-size:14px;font-weight:500;background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:.55rem 1.1rem;cursor:pointer}
+button.play:active{transform:scale(0.98)}
+input[type=range]{flex:1}
+.tmono{font-family:var(--font-mono);font-size:13px;color:var(--text-2);min-width:74px;text-align:right;font-variant-numeric:tabular-nums}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.25rem}
+@media (max-width:720px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
+.panel-head{padding:.85rem 1.1rem .5rem}
+.panel-title{font-family:var(--font-display);font-size:17px;font-weight:600}
+.canvas-wrap{background:var(--canvas-bg);margin:0 .75rem .75rem;border-radius:8px;overflow:hidden}
+canvas{display:block;width:100%;height:auto}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--text-2);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.5rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.foot{font-family:var(--font-mono);font-size:12px;color:var(--text-3);border-top:0.5px solid var(--border);padding-top:1rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.loading{color:var(--text-3);font-size:13px;text-align:center;padding:3rem 0}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Drosophila melanogaster &middot; compartment-specific dopamine modulation &middot; FlyWire connectome</p>
+  <h1>Compartment specificity</h1>
+  <p class="lede">Real MBONs were split by which real dopamine neuron type dominates their input: <b>PPL1</b> (punishment-associated, blue) or <b>PAM</b> (reward-associated, teal). Punishment-gated learning only touched the blue synapses. Watch what happens to each group after 12 punished trials &mdash; confirmed across 4 independent random odor draws, not just this one.</p>
+
+  <div class="stats">
+    <div class="stat"><p class="label">PPL-dominant MBONs (touched)</p><p class="value down">&minus;8.1% &plusmn; 0.5%</p></div>
+    <div class="stat"><p class="label">PAM-dominant MBONs (untouched)</p><p class="value flat">&minus;0.2% &plusmn; 0.2%</p></div>
+  </div>
+
+  <div class="transport">
+    <button class="play" id="playBtn">Play</button>
+    <input type="range" id="scrub" min="0" max="300" value="0" step="1">
+    <span class="tmono" id="tReadout">0 ms</span>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Before learning</span></div>
+      <div class="canvas-wrap"><canvas id="cvBefore" width="640" height="400"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">After 12 punished trials</span></div>
+      <div class="canvas-wrap"><canvas id="cvAfter" width="640" height="400"></canvas></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--amber-glow)"></i>odor-A Kenyon cells (150 neurons)</span>
+    <span><i class="dot" style="background:var(--blue-glow)"></i>PPL-dominant MBONs &mdash; synapses depressed</span>
+    <span><i class="dot" style="background:var(--teal-glow)"></i>PAM-dominant MBONs &mdash; synapses untouched</span>
+    <span><i class="dot" style="background:var(--violet-glow);opacity:.6"></i>rest of the brain</span>
+  </div>
+
+  <p class="loading" id="loading">loading real spike data&hellip;</p>
+
+  <div class="foot">
+    <span>MBON dopamine-cluster identity derived directly from the connectome (307 real PAM neurons, 24 real PPL neurons)</span>
+    <span>model: Shiu et al. 2024, <em>Nature</em> &middot; cell types: Schlegel et al. 2024</span>
+  </div>
+</div>
+
+<script>
+fetch('compartment_viz.json').then(r => r.json()).then(data => {
+  document.getElementById('loading').remove();
+
+  const dark = () => {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  const isDark = dark();
+  const colors = {
+    amber: isDark ? '255,201,120' : '168,101,15',
+    ppl: isDark ? '159,203,255' : '30,79,143',
+    pam: isDark ? '79,214,186' : '13,107,92',
+    violet: isDark ? '179,162,255' : '154,134,255',
+    sil: isDark ? '255,255,255' : '80,70,140',
+  };
+  const catColor = { odor_A_kc: colors.amber, ppl_mbon: colors.ppl, pam_mbon: colors.pam };
+
+  const cvB = document.getElementById('cvBefore');
+  const cvA = document.getElementById('cvAfter');
+  const ctxB = cvB.getContext('2d');
+  const ctxA = cvA.getContext('2d');
+  const W = cvB.width, H = cvB.height;
+
+  function renderSilhouette() {
+    const off = document.createElement('canvas');
+    off.width = W; off.height = H;
+    const octx = off.getContext('2d');
+    octx.fillStyle = 'rgb(' + (isDark ? '5,4,8' : '12,10,18') + ')';
+    octx.fillRect(0, 0, W, H);
+    const sil = data.silhouette, sw = data.sil_w, sh = data.sil_h;
+    const cw = W / sw, ch = H / sh;
+    let maxV = 1;
+    for (let row of sil) for (let v of row) if (v > maxV) maxV = v;
+    for (let gy = 0; gy < sh; gy++) for (let gx = 0; gx < sw; gx++) {
+      const v = sil[gy][gx];
+      if (v <= 0) continue;
+      const a = Math.min(0.5, Math.pow(v / maxV, 0.4) * 0.5);
+      octx.fillStyle = `rgba(${colors.sil},${a})`;
+      octx.fillRect(gx * cw, gy * ch, cw + 1, ch + 1);
+    }
+    return off;
+  }
+  const silhouette = renderSilhouette();
+
+  function toXY(x, y) {
+    const px = (x - data.before.x_min) / (data.before.x_max - data.before.x_min) * W;
+    const py = (y - data.before.y_min) / (data.before.y_max - data.before.y_min) * H;
+    return [px, py];
+  }
+
+  function makeState(panelData) {
+    return { heat: new Float32Array(panelData.grid_h * panelData.grid_w), glow: {}, spikeCursor: 0 };
+  }
+  const stateB = makeState(data.before);
+  const stateA = makeState(data.after);
+
+  function drawPanel(ctx, panelData, state, tMs, dtMs) {
+    ctx.drawImage(silhouette, 0, 0);
+    const gw = panelData.grid_w, gh = panelData.grid_h, nb = panelData.n_tbins;
+    const bin = Math.min(nb - 1, Math.floor(tMs / panelData.t_max * nb));
+    const grid = panelData.grid[bin];
+    const decay = Math.pow(0.90, dtMs / 8);
+    for (let gy = 0; gy < gh; gy++) {
+      const row = grid[gy];
+      for (let gx = 0; gx < gw; gx++) {
+        const idx = gy * gw + gx;
+        state.heat[idx] *= decay;
+        if (row[gx] > 0) state.heat[idx] = Math.min(1, state.heat[idx] + row[gx] * 0.35);
+      }
+    }
+    const cw = W / gw, ch = H / gh;
+    for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
+      const v = state.heat[gy * gw + gx];
+      if (v < 0.02) continue;
+      ctx.fillStyle = `rgba(${colors.violet},${Math.min(0.55, v)})`;
+      ctx.fillRect(gx * cw - 1, gy * ch - 1, cw + 2, ch + 2);
+    }
+
+    while (state.spikeCursor < panelData.spikes.length && panelData.spikes[state.spikeCursor][1] <= tMs) {
+      const [nid, st] = panelData.spikes[state.spikeCursor];
+      state.glow[nid] = st;
+      state.spikeCursor++;
+    }
+    for (const nid in panelData.neurons) {
+      const n = panelData.neurons[nid];
+      const lastT = state.glow[nid];
+      let b = 0;
+      if (lastT !== undefined) {
+        const age = tMs - lastT;
+        b = age < 0 ? 0 : Math.exp(-age / 55);
+      }
+      const [px, py] = toXY(n.x, n.y);
+      const col = catColor[n.cat];
+      const r = 2 + b * 3.5;
+      ctx.fillStyle = `rgba(${col},${0.25 + b * 0.75})`;
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, 7);
+      ctx.fill();
+    }
+  }
+
+  let playing = false, tMs = 0, lastFrame = null;
+  const DURATION_MS = 300, PLAYBACK_SECONDS = 6;
+  const scrub = document.getElementById('scrub');
+  const tReadout = document.getElementById('tReadout');
+  const playBtn = document.getElementById('playBtn');
+
+  function resetCursors() {
+    stateB.spikeCursor = 0; stateA.spikeCursor = 0;
+    stateB.glow = {}; stateA.glow = {};
+    stateB.heat.fill(0); stateA.heat.fill(0);
+  }
+  function renderAt(t) {
+    drawPanel(ctxB, data.before, stateB, t, 16);
+    drawPanel(ctxA, data.after, stateA, t, 16);
+    tReadout.textContent = Math.round(t) + ' ms';
+    scrub.value = Math.round(t);
+  }
+  function frame(now) {
+    if (!playing) return;
+    if (lastFrame === null) lastFrame = now;
+    const dt = now - lastFrame;
+    lastFrame = now;
+    tMs += dt * (DURATION_MS / (PLAYBACK_SECONDS * 1000));
+    if (tMs >= DURATION_MS) { tMs = 0; resetCursors(); }
+    renderAt(tMs);
+    requestAnimationFrame(frame);
+  }
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) { lastFrame = null; requestAnimationFrame(frame); }
+  });
+  scrub.addEventListener('input', () => {
+    playing = false; playBtn.textContent = 'Play';
+    tMs = Number(scrub.value);
+    resetCursors();
+    renderAt(tMs);
+  });
+
+  renderAt(0);
+});
+</script>

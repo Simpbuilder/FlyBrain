@@ -1,5 +1,17 @@
 # Session notes: extended autonomous run
 
+## Future ideas (not started)
+- A real 3D, rotatable brain visualization (we already have real x/y/z
+  positions for every neuron, currently only used as a flattened 2D
+  projection) - orbit/rotate controls while the simulation is playing,
+  using the z-axis (currently unused) for actual depth. WebGL/three.js
+  territory rather than 2D canvas.
+- User is open to adding an AI (via API) to this project - not scoped
+  yet. Worth exploring: a natural-language interface to set up and run
+  experiments ("stimulate neuron X and tell me what happens") instead
+  of hand-writing a new script each time, or an LLM narrating/
+  interpreting a given activity pattern in plain English.
+
 ## Milestone 1: clean learning statistics
 - Swept KC odor-ensemble size (50-250) against MBON response reliability.
   Below ~100 KCs the mushroom body almost never crosses its response
