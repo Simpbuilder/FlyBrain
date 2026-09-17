@@ -1,0 +1,152 @@
+{
+  "communities": {
+    "0": [
+      "brian2",
+      "drosophila_brain_model_debug_stim",
+      "drosophila_brain_model_debug_stim2",
+      "drosophila_brain_model_debug_stim3",
+      "drosophila_brain_model_debug_stim4",
+      "drosophila_brain_model_debug_stim5",
+      "numpy",
+      "pandas",
+      "textwrap"
+    ],
+    "1": [
+      "drosophila_brain_model_demo_run",
+      "drosophila_brain_model_model",
+      "drosophila_brain_model_model_construct_dataframe",
+      "drosophila_brain_model_model_rationale_215",
+      "drosophila_brain_model_model_rationale_299",
+      "drosophila_brain_model_model_run_exp",
+      "joblib",
+      "pathlib",
+      "time"
+    ],
+    "2": [
+      "drosophila_brain_model_model_get_spk_trn",
+      "drosophila_brain_model_model_poi",
+      "drosophila_brain_model_model_rationale_109",
+      "drosophila_brain_model_model_rationale_193",
+      "drosophila_brain_model_model_rationale_251",
+      "drosophila_brain_model_model_rationale_59",
+      "drosophila_brain_model_model_run_trial",
+      "drosophila_brain_model_model_silence"
+    ],
+    "3": [
+      "drosophila_brain_model_learn_mushroom_body",
+      "drosophila_brain_model_learn_mushroom_body_mbon_rate",
+      "drosophila_brain_model_learn_mushroom_body_rationale_80",
+      "drosophila_brain_model_learn_mushroom_body_run_trial",
+      "drosophila_brain_model_model_create_model",
+      "drosophila_brain_model_model_rationale_130",
+      "json"
+    ],
+    "4": [
+      "drosophila_brain_model_utils",
+      "drosophila_brain_model_utils_get_rate",
+      "drosophila_brain_model_utils_load_exps",
+      "drosophila_brain_model_utils_rationale_33",
+      "drosophila_brain_model_utils_rationale_7"
+    ]
+  },
+  "cohesion": {
+    "0": 0.4166666666666667,
+    "1": 0.3055555555555556,
+    "2": 0.25,
+    "3": 0.2857142857142857,
+    "4": 0.4
+  },
+  "gods": [
+    {
+      "id": "drosophila_brain_model_model_run_trial",
+      "label": "run_trial()",
+      "degree": 7
+    },
+    {
+      "id": "drosophila_brain_model_model_create_model",
+      "label": "create_model()",
+      "degree": 6
+    },
+    {
+      "id": "drosophila_brain_model_model_run_exp",
+      "label": "run_exp()",
+      "degree": 5
+    },
+    {
+      "id": "drosophila_brain_model_model_construct_dataframe",
+      "label": "construct_dataframe()",
+      "degree": 3
+    },
+    {
+      "id": "drosophila_brain_model_model_get_spk_trn",
+      "label": "get_spk_trn()",
+      "degree": 3
+    },
+    {
+      "id": "drosophila_brain_model_model_poi",
+      "label": "poi()",
+      "degree": 3
+    },
+    {
+      "id": "drosophila_brain_model_model_silence",
+      "label": "silence()",
+      "degree": 3
+    },
+    {
+      "id": "drosophila_brain_model_learn_mushroom_body_run_trial",
+      "label": "run_trial()",
+      "degree": 2
+    },
+    {
+      "id": "drosophila_brain_model_utils_get_rate",
+      "label": "get_rate()",
+      "degree": 2
+    },
+    {
+      "id": "drosophila_brain_model_utils_load_exps",
+      "label": "load_exps()",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "run_exp()",
+      "target": "run_trial()",
+      "source_files": [
+        "Drosophila_brain_model/model.py",
+        "Drosophila_brain_model/model.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "note": "Bridges community 1 → community 2"
+    },
+    {
+      "source": "run_trial()",
+      "target": "create_model()",
+      "source_files": [
+        "Drosophila_brain_model/model.py",
+        "Drosophila_brain_model/model.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 2 → community 3"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `run_trial()` connect `run_trial` to `model.py`, `learn_mushroom_body.py`?",
+      "why": "High betweenness centrality (0.084) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `run_exp()` connect `model.py` to `run_trial`?",
+      "why": "High betweenness centrality (0.070) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `create_model()` connect `learn_mushroom_body.py` to `brian2`, `model.py`, `run_trial`?",
+      "why": "High betweenness centrality (0.069) - this node is a cross-community bridge."
+    }
+  ]
+}

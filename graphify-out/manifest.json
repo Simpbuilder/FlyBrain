@@ -1,0 +1,68 @@
+{
+  "Drosophila_brain_model/debug_stim.py": {
+    "mtime": 1789609100.4172711,
+    "seen": 1789610019.5720599,
+    "ast_hash": "eed0046f046039702d23f09f7e649cff",
+    "semantic_hash": "eed0046f046039702d23f09f7e649cff"
+  },
+  "Drosophila_brain_model/debug_stim2.py": {
+    "mtime": 1789608915.4122338,
+    "seen": 1789610019.5720634,
+    "ast_hash": "c9bb29f524ef828818a46f44063c85d2",
+    "semantic_hash": "c9bb29f524ef828818a46f44063c85d2"
+  },
+  "Drosophila_brain_model/debug_stim3.py": {
+    "mtime": 1789608995.325949,
+    "seen": 1789610019.572065,
+    "ast_hash": "e397de6529d40a1ea6014b107dc3abf6",
+    "semantic_hash": "e397de6529d40a1ea6014b107dc3abf6"
+  },
+  "Drosophila_brain_model/debug_stim4.py": {
+    "mtime": 1789609073.2465029,
+    "seen": 1789610019.5720658,
+    "ast_hash": "b3a55bdc1a2cefae056a061a7ada8bc1",
+    "semantic_hash": "b3a55bdc1a2cefae056a061a7ada8bc1"
+  },
+  "Drosophila_brain_model/debug_stim5.py": {
+    "mtime": 1789609203.422573,
+    "seen": 1789610019.5720663,
+    "ast_hash": "1ac2e8d2473b625e73d269edc26219d1",
+    "semantic_hash": "1ac2e8d2473b625e73d269edc26219d1"
+  },
+  "Drosophila_brain_model/demo_run.py": {
+    "mtime": 1789607356.0396612,
+    "seen": 1789610019.572067,
+    "ast_hash": "40c88789e36a815717d6d55a6c5aac4e",
+    "semantic_hash": "40c88789e36a815717d6d55a6c5aac4e"
+  },
+  "Drosophila_brain_model/learn_mushroom_body.py": {
+    "mtime": 1789609659.8003666,
+    "seen": 1789610019.5720677,
+    "ast_hash": "98d9503956465214cbbe1afc4169a836",
+    "semantic_hash": "98d9503956465214cbbe1afc4169a836"
+  },
+  "Drosophila_brain_model/model.py": {
+    "mtime": 1789606909.9226754,
+    "seen": 1789610019.5720685,
+    "ast_hash": "0baa5ba0f9c9d15d4a86cb1be144c370",
+    "semantic_hash": "0baa5ba0f9c9d15d4a86cb1be144c370"
+  },
+  "Drosophila_brain_model/utils.py": {
+    "mtime": 1789606909.9438615,
+    "seen": 1789610019.5720692,
+    "ast_hash": "1c95f6a72347f8925dd6fd87cc8731fb",
+    "semantic_hash": "1c95f6a72347f8925dd6fd87cc8731fb"
+  },
+  "demo_spikes.json": {
+    "mtime": 1789607443.7539012,
+    "seen": 1789610019.5720694,
+    "ast_hash": "258890df5df9f12fd419ae215cedb950",
+    "semantic_hash": "258890df5df9f12fd419ae215cedb950"
+  },
+  "learning_results.json": {
+    "mtime": 1789609764.6573696,
+    "seen": 1789610019.57207,
+    "ast_hash": "f82056e2a3fa9b5dfdd093d88ee87dbf",
+    "semantic_hash": "f82056e2a3fa9b5dfdd093d88ee87dbf"
+  }
+}

@@ -1,0 +1,151 @@
+<title>Sugar neuron cascade</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#eef0ee; --surface:#ffffff; --surface-2:#e4e7e3;
+  --text:#161a17; --text-2:#565f59; --text-3:#8b938c;
+  --border:#d3d7d0;
+  --amber-bg:#f6e6c8; --amber-line:#a8720f; --amber-ink:#5c3d05;
+  --blue-bg:#dde4f8; --blue-line:#2b48b3; --blue-ink:#1c2f77;
+  --gray-dot:#a9afa6;
+  --font-sans:'IBM Plex Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14181a; --surface:#1b2023; --surface-2:#232a2d;
+    --text:#eceeec; --text-2:#a9b0ab; --text-3:#767d78;
+    --border:#333b3e;
+    --amber-bg:#3a2c10; --amber-line:#e0a23d; --amber-ink:#f2cb87;
+    --blue-bg:#1c2745; --blue-line:#6e8cf5; --blue-ink:#a9bafa;
+    --gray-dot:#565d58;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181a; --surface:#1b2023; --surface-2:#232a2d;
+  --text:#eceeec; --text-2:#a9b0ab; --text-3:#767d78;
+  --border:#333b3e;
+  --amber-bg:#3a2c10; --amber-line:#e0a23d; --amber-ink:#f2cb87;
+  --blue-bg:#1c2745; --blue-line:#6e8cf5; --blue-ink:#a9bafa;
+  --gray-dot:#565d58;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);margin:0;padding:2.5rem 1.5rem 4rem;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .6rem}
+h1{font-size:28px;font-weight:500;margin:0 0 .5rem;text-wrap:balance}
+.lede{font-size:15px;color:var(--text-2);max-width:62ch;margin:0 0 2rem}
+.lede code{font-family:var(--font-mono);font-size:13px;background:var(--surface-2);padding:.1em .35em;border-radius:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:2rem}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.15rem}
+.stat .label{font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin:0 0 .4rem}
+.stat .value{font-family:var(--font-mono);font-size:24px;font-variant-numeric:tabular-nums;margin:0}
+.stat .unit{font-size:13px;color:var(--text-2);margin-left:.25rem}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:1.5rem 1.5rem 1rem;margin-bottom:1.5rem}
+.panel-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.75rem;margin-bottom:1rem}
+.panel-title{font-size:15px;font-weight:500;margin:0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.chart-wrap{position:relative;width:100%;height:460px}
+.foot{font-family:var(--font-mono);font-size:12px;color:var(--text-3);border-top:0.5px solid var(--border);padding-top:1rem;margin-top:.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.loading{color:var(--text-3);font-size:13px;padding:2rem 0;text-align:center}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Drosophila melanogaster &middot; FlyWire connectome v630 &middot; leaky integrate-and-fire</p>
+  <h1>Sugar neuron cascade</h1>
+  <p class="lede">21 real sugar-sensing neurons (right hemisphere) were driven at 200&nbsp;Hz for one 300&nbsp;ms trial. Every dot below is an actual spike from the simulation, from all <code>138,639</code> neurons of the reconstructed adult brain &mdash; ordered top to bottom by when each neuron first fired, so the cascade reads as a wave moving down the page.</p>
+
+  <div class="stats">
+    <div class="stat"><p class="label">Active neurons</p><p class="value">353<span class="unit">of 138,639</span></p></div>
+    <div class="stat"><p class="label">Total spikes</p><p class="value">4,088</p></div>
+    <div class="stat"><p class="label">MN9 first spike</p><p class="value">30<span class="unit">ms</span></p></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <p class="panel-title">Spike raster, trial 1</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--amber-line)"></i>sugar-sensing input (21 neurons)</span>
+        <span><i class="dot" style="background:var(--blue-line)"></i>MN9 &mdash; proboscis motor neuron</span>
+        <span><i class="dot" style="background:var(--gray-dot)"></i>other, downstream</span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="raster" role="img" aria-label="Scatter plot of neuron spikes over 300 milliseconds, 353 neurons ordered by first spike time, showing sugar neurons firing first and MN9 the motor neuron firing around 30 milliseconds"></canvas>
+    </div>
+    <p class="loading" id="loading">loading spike data&hellip;</p>
+  </div>
+
+  <div class="foot">
+    <span>model: Shiu et al. 2024, <em>Nature</em> &mdash; philshiu/Drosophila_brain_model</span>
+    <span>engine: Brian2, numpy backend</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+fetch('data.json').then(r => r.json()).then(d => {
+  document.getElementById('loading').remove();
+
+  const isDark = () => {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  const dark = isDark();
+  const colors = {
+    sugar: dark ? '#e0a23d' : '#a8720f',
+    mn9:   dark ? '#6e8cf5' : '#2b48b3',
+    other: dark ? '#565d58' : '#a9afa6',
+    grid:  dark ? '#333b3e' : '#e3e6e1',
+    tick:  dark ? '#a9b0ab' : '#565f59',
+  };
+
+  const byCategory = { sugar: [], mn9: [], other: [] };
+  for (const s of d.spikes) byCategory[s.cat].push({ x: s.t, y: s.y });
+
+  new Chart(document.getElementById('raster'), {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'other', data: byCategory.other, backgroundColor: colors.other, pointRadius: 2, pointHoverRadius: 4 },
+        { label: 'sugar-sensing input', data: byCategory.sugar, backgroundColor: colors.sugar, pointRadius: 2.5, pointHoverRadius: 5 },
+        { label: 'MN9 (proboscis motor neuron)', data: byCategory.mn9, backgroundColor: colors.mn9, pointRadius: 4, pointHoverRadius: 6 },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400 },
+      scales: {
+        x: {
+          title: { display: true, text: 'time since stimulation onset (ms)', color: colors.tick, font: { family: 'IBM Plex Mono', size: 11 } },
+          min: 0, max: 300,
+          grid: { color: colors.grid },
+          ticks: { color: colors.tick, font: { family: 'IBM Plex Mono', size: 11 } },
+        },
+        y: {
+          title: { display: true, text: 'neuron (ordered by first spike)', color: colors.tick, font: { family: 'IBM Plex Mono', size: 11 } },
+          reverse: true,
+          grid: { display: false },
+          ticks: { color: colors.tick, font: { family: 'IBM Plex Mono', size: 11 } },
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const ds = ctx.dataset.label;
+              return `${ds} — t = ${ctx.parsed.x.toFixed(1)} ms`;
+            }
+          }
+        }
+      }
+    }
+  });
+});
+</script>
