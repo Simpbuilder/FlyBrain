@@ -102,6 +102,18 @@ PAM-dominant MBONs -0.2% +/- 0.2%.** Tight, consistent, not a fluke of
 one particular draw. The script now auto-flags high-baseline-variance
 seeds (std > 15Hz) instead of letting them silently distort an average.
 
+Extended to seeds 5-9: 3 were correctly auto-flagged as bimodal, but
+seed 5 slipped through the filter - its baseline was *uniformly* low
+(~9Hz every rep, low variance) rather than flip-flopping, a different
+failure mode the variance check doesn't catch. Manually excluded it
+after inspection. Combining the 5 genuinely clean seeds found so far
+(1, 2, 3, 4, 9): **PPL -7.96%, PAM -0.16%** - same result, now with a
+5th independent confirmation. Worth noting: roughly half of random
+seeds across this whole 10-seed batch landed in some degenerate
+baseline state, which is itself an honest data point about how
+finely-balanced this near-threshold circuit is - not something to
+paper over.
+
 ### Real thermosensory-driven dopamine (replacing the experimenter flag)
 Previously, "punishment" was a Python-side flag that told the script
 when to apply depression. Found that real thermosensory neurons (TRN,

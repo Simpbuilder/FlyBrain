@@ -33,12 +33,13 @@ r_stim = 150 * Hz
 eta = 0.18
 n_reps = 8
 n_pairing = 12
-n_seeds = 5
+n_seeds = 10
+seed_start = 5  # seeds 0-4 already have clean, committed results
 n_warmup = 6
 
 results = []
 
-for seed in range(n_seeds):
+for seed in range(seed_start, n_seeds):
     t0 = time.time()
     rng = np.random.default_rng(seed)
     shuffled = rng.permutation(kc_idx_all)
