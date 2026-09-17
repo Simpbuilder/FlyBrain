@@ -32,11 +32,23 @@ canvas{display:block;width:100%;height:auto}
 .log-t{color:var(--text-3);white-space:nowrap}
 .log-msg{color:var(--text-2)}
 .empty{color:var(--text-3);font-size:13px;padding:2rem 0;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:.75rem .9rem}
+.stat-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-3);margin:0 0 .3rem}
+.stat-value{font-family:var(--font-mono);font-size:19px;font-variant-numeric:tabular-nums}
 </style>
 
 <div class="wrap">
   <p class="eyebrow"><span class="live-dot"></span>live &middot; updates automatically as new experiments finish</p>
   <h1>FlyBrain live dashboard</h1>
+
+  <div class="stats" id="gameStats" style="display:none">
+    <div class="stat"><p class="stat-label">Lives so far</p><p class="stat-value" id="statEpisode">-</p></div>
+    <div class="stat"><p class="stat-label">Best survival</p><p class="stat-value" id="statBest">-</p></div>
+    <div class="stat"><p class="stat-label">Recent avg</p><p class="stat-value" id="statAvg">-</p></div>
+    <div class="stat"><p class="stat-label">Last life</p><p class="stat-value" id="statLast">-</p></div>
+  </div>
+
   <div class="grid">
     <div class="panel">
       <div class="panel-head">
@@ -170,6 +182,16 @@ function colorFor(cat) { return catPalette[cat] || '154,134,255'; }
     renderLegend();
     resetPlayback();
     lastFrame = null;
+  });
+
+  db.doc('game/stats').onSnapshot(snap => {
+    if (!snap.exists) return;
+    const d = snap.data();
+    document.getElementById('gameStats').style.display = '';
+    document.getElementById('statEpisode').textContent = d.episode;
+    document.getElementById('statBest').textContent = d.best_survival + ' ticks';
+    document.getElementById('statAvg').textContent = d.avg_survival + ' ticks';
+    document.getElementById('statLast').textContent = d.last_survival + ' ticks';
   });
 
   db.doc('log/feed').onSnapshot(snap => {
