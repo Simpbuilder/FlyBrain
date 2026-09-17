@@ -96,7 +96,7 @@ def pain_and_capture(episode, ticks):
         name=f'Fly game — life #{episode} crashed after {ticks} ticks',
         spk_mon=spk_mon, t_start=t_start, duration_ms=30,
         pos_x=pos_x, pos_y=pos_y,
-        highlight={'loom': loom_idx, 'gf': gf_idx, 'hsvs': hsvs_left + hsvs_right, 'jo_b': trn_idx},
+        highlight={'loom': loom_idx, 'gf': gf_idx, 'hsvs': hsvs_left + hsvs_right, 'pain': trn_idx},
         out_path='../failure_snapshot.json',
     )
 

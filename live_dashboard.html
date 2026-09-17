@@ -68,10 +68,19 @@ canvas{display:block;width:100%;height:auto}
 <script>
 const catPalette = {
   loom: '255,138,82', gf: '111,178,255', hsvs: '255,182,72', dng46: '111,178,255',
-  jo_b: '79,214,186', dng29: '111,178,255', odor_A_kc: '255,182,72',
-  ppl_mbon: '111,178,255', pam_mbon: '79,214,186', other: '154,134,255',
+  jo_b: '255,182,72', dng29: '111,178,255', odor_A_kc: '255,182,72',
+  ppl_mbon: '111,178,255', pam_mbon: '79,214,186', pain: '235,64,52', other: '154,134,255',
+};
+const catNames = {
+  loom: 'Danger sensors (looming)', gf: 'Escape trigger (Giant Fiber)',
+  hsvs: 'Motion sensors (steering)', dng46: 'Steering output',
+  jo_b: 'Wind/vibration sensors', dng29: 'Wind response output',
+  odor_A_kc: 'Smell sensors', ppl_mbon: 'Punishment memory output',
+  pam_mbon: 'Reward memory output', pain: 'Pain signal (on failure)',
+  other: 'Rest of the brain',
 };
 function colorFor(cat) { return catPalette[cat] || '154,134,255'; }
+function nameFor(cat) { return catNames[cat] || cat; }
 
 (async () => {
   const db = await claude.use('db');
@@ -114,7 +123,7 @@ function colorFor(cat) { return catPalette[cat] || '154,134,255'; }
   function renderLegend() {
     if (!current) return;
     legendEl.innerHTML = current.categories.map(c =>
-      `<span><i class="dot" style="background:rgb(${colorFor(c)})"></i>${c}</span>`).join('');
+      `<span><i class="dot" style="background:rgb(${colorFor(c)})"></i>${nameFor(c)}</span>`).join('');
   }
 
   function resetPlayback() {
