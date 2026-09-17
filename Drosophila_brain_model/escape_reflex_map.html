@@ -1,0 +1,243 @@
+<title>Giant Fiber escape</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f4f3f0; --surface:#ffffff; --surface-2:#eceae4;
+  --text:#1a1814; --text-2:#5c584f; --text-3:#8f8a7d;
+  --border:#ddd9cf;
+  --coral:#b8511f; --coral-glow:#ff8a52;
+  --amber:#a8650f; --amber-glow:#ffb648;
+  --blue:#1e4f8f; --blue-glow:#6fb2ff;
+  --violet-glow:#9a86ff;
+  --canvas-bg:#0c0a12;
+  --danger-bg:#f3d9cf; --danger-text:#7a2e0e;
+  --font-display:'Fraunces',Georgia,serif;
+  --font-body:'Work Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15130f; --surface:#1c1a15; --surface-2:#242119;
+    --text:#f1ede3; --text-2:#c2bcac; --text-3:#8a8574;
+    --border:#38342a;
+    --coral:#ff8a52; --coral-glow:#ffab7a;
+    --amber:#f2ae4e; --amber-glow:#ffc978;
+    --blue:#7cb3f5; --blue-glow:#9fcbff;
+    --violet-glow:#b3a2ff;
+    --canvas-bg:#050408;
+    --danger-bg:#3a2013; --danger-text:#ffb18c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15130f; --surface:#1c1a15; --surface-2:#242119;
+  --text:#f1ede3; --text-2:#c2bcac; --text-3:#8a8574;
+  --border:#38342a;
+  --coral:#ff8a52; --coral-glow:#ffab7a;
+  --amber:#f2ae4e; --amber-glow:#ffc978;
+  --blue:#7cb3f5; --blue-glow:#9fcbff;
+  --violet-glow:#b3a2ff;
+  --canvas-bg:#050408;
+  --danger-bg:#3a2013; --danger-text:#ffb18c;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;padding:2.5rem 1.5rem 3.5rem;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin:0 0 .7rem}
+h1{font-family:var(--font-display);font-weight:600;font-size:34px;margin:0 0 .6rem;text-wrap:balance}
+.lede{font-size:16px;color:var(--text-2);max-width:66ch;margin:0 0 1.75rem}
+.lede b{font-weight:500;color:var(--text)}
+.transport{display:flex;align-items:center;gap:14px;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.25rem}
+button.play{font-family:var(--font-body);font-size:14px;font-weight:500;background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:.55rem 1.1rem;cursor:pointer}
+button.play:active{transform:scale(0.98)}
+input[type=range]{flex:1}
+.tmono{font-family:var(--font-mono);font-size:13px;color:var(--text-2);min-width:74px;text-align:right;font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;position:relative}
+.canvas-wrap{background:var(--canvas-bg);margin:.9rem;border-radius:8px;overflow:hidden;position:relative}
+canvas{display:block;width:100%;height:auto}
+.trigger-flag{position:absolute;top:14px;left:14px;background:var(--danger-bg);color:var(--danger-text);font-family:var(--font-mono);font-size:12px;padding:5px 10px;border-radius:6px;opacity:0;transition:opacity .15s}
+.trigger-flag.show{opacity:1}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--text-2);background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1.5rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.foot{font-family:var(--font-mono);font-size:12px;color:var(--text-3);border-top:0.5px solid var(--border);padding-top:1rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.loading{color:var(--text-3);font-size:13px;text-align:center;padding:3rem 0}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Drosophila melanogaster &middot; Giant Fiber escape pathway &middot; FlyWire connectome</p>
+  <h1>Giant Fiber escape</h1>
+  <p class="lede">314 real looming-detector neurons (<b>LC4</b> and <b>LPLC2</b>, coral and amber) are driven at once, simulating something rushing toward the fly. Watch how long the real <b>Giant Fiber</b> escape-command neuron (blue) takes to respond &mdash; one of the fastest visual-to-motor pathways known in any animal.</p>
+
+  <div class="transport">
+    <button class="play" id="playBtn">Play</button>
+    <input type="range" id="scrub" min="0" max="300" value="0" step="0.5">
+    <span class="tmono" id="tReadout">0.0 ms</span>
+  </div>
+
+  <div class="panel">
+    <div class="canvas-wrap">
+      <canvas id="cv" width="680" height="440"></canvas>
+      <div class="trigger-flag" id="flag">escape triggered</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--coral-glow)"></i>LC4 (104 neurons)</span>
+    <span><i class="dot" style="background:var(--amber-glow)"></i>LPLC2 (210 neurons)</span>
+    <span><i class="dot" style="background:var(--blue-glow)"></i>Giant Fiber, DNp01 (2 neurons)</span>
+    <span><i class="dot" style="background:var(--violet-glow);opacity:.6"></i>rest of the brain reacting</span>
+  </div>
+
+  <p class="loading" id="loading">loading real spike data&hellip;</p>
+
+  <div class="foot">
+    <span>293 direct synapses from looming detectors onto the Giant Fiber, 504 second-hop reinforcing neurons</span>
+    <span>model: Shiu et al. 2024, <em>Nature</em></span>
+  </div>
+</div>
+
+<script>
+fetch('looming_viz.json').then(r => r.json()).then(data => {
+  document.getElementById('loading').remove();
+
+  const dark = () => {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  const isDark = dark();
+  const colors = {
+    lc4: isDark ? '255,171,122' : '184,81,31',
+    lplc2: isDark ? '255,201,120' : '168,101,15',
+    gf: isDark ? '159,203,255' : '30,79,143',
+    violet: isDark ? '179,162,255' : '154,134,255',
+    sil: isDark ? '255,255,255' : '80,70,140',
+  };
+  const catColor = { lc4: colors.lc4, lplc2: colors.lplc2, gf: colors.gf };
+
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+
+  const off = document.createElement('canvas');
+  off.width = W; off.height = H;
+  const octx = off.getContext('2d');
+  octx.fillStyle = 'rgb(' + (isDark ? '5,4,8' : '12,10,18') + ')';
+  octx.fillRect(0, 0, W, H);
+  {
+    const sil = data.silhouette, sw = data.sil_w, sh = data.sil_h;
+    const cw = W / sw, ch = H / sh;
+    let maxV = 1;
+    for (let row of sil) for (let v of row) if (v > maxV) maxV = v;
+    for (let gy = 0; gy < sh; gy++) for (let gx = 0; gx < sw; gx++) {
+      const v = sil[gy][gx];
+      if (v <= 0) continue;
+      const a = Math.min(0.5, Math.pow(v / maxV, 0.4) * 0.5);
+      octx.fillStyle = `rgba(${colors.sil},${a})`;
+      octx.fillRect(gx * cw, gy * ch, cw + 1, ch + 1);
+    }
+  }
+
+  function toXY(x, y) {
+    const px = (x - data.x_min) / (data.x_max - data.x_min) * W;
+    const py = (y - data.y_min) / (data.y_max - data.y_min) * H;
+    return [px, py];
+  }
+
+  const heat = new Float32Array(data.grid_h * data.grid_w);
+  const glow = {};
+  let spikeCursor = 0;
+  const flag = document.getElementById('flag');
+
+  function resetState() {
+    heat.fill(0); Object.keys(glow).forEach(k => delete glow[k]); spikeCursor = 0;
+    flag.classList.remove('show');
+  }
+
+  function drawAt(tMs, dtMs) {
+    ctx.drawImage(off, 0, 0);
+
+    const gw = data.grid_w, gh = data.grid_h, nb = data.n_tbins;
+    const bin = Math.min(nb - 1, Math.floor(tMs / data.t_max * nb));
+    const grid = data.grid[bin];
+    const decay = Math.pow(0.90, dtMs / 8);
+    for (let gy = 0; gy < gh; gy++) {
+      const row = grid[gy];
+      for (let gx = 0; gx < gw; gx++) {
+        const idx = gy * gw + gx;
+        heat[idx] *= decay;
+        if (row[gx] > 0) heat[idx] = Math.min(1, heat[idx] + row[gx] * 0.35);
+      }
+    }
+    const cw = W / gw, ch = H / gh;
+    for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
+      const v = heat[gy * gw + gx];
+      if (v < 0.02) continue;
+      ctx.fillStyle = `rgba(${colors.violet},${Math.min(0.55, v)})`;
+      ctx.fillRect(gx * cw - 1, gy * ch - 1, cw + 2, ch + 2);
+    }
+
+    while (spikeCursor < data.spikes.length && data.spikes[spikeCursor][1] <= tMs) {
+      const [nid, st] = data.spikes[spikeCursor];
+      glow[nid] = st;
+      spikeCursor++;
+    }
+    for (const nid in data.neurons) {
+      const n = data.neurons[nid];
+      const lastT = glow[nid];
+      let b = 0;
+      if (lastT !== undefined) {
+        const age = tMs - lastT;
+        b = age < 0 ? 0 : Math.exp(-age / 55);
+      }
+      const [px, py] = toXY(n.x, n.y);
+      const col = catColor[n.cat];
+      const r = (n.cat === 'gf' ? 3.5 : 2) + b * (n.cat === 'gf' ? 6 : 3.5);
+      ctx.fillStyle = `rgba(${col},${0.25 + b * 0.75})`;
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, 7);
+      ctx.fill();
+    }
+
+    flag.classList.toggle('show', data.gf_first_ms !== null && tMs >= data.gf_first_ms);
+  }
+
+  let playing = false, tMs = 0, lastFrame = null;
+  const DURATION_MS = 300, PLAYBACK_SECONDS = 10;
+  const scrub = document.getElementById('scrub');
+  const tReadout = document.getElementById('tReadout');
+  const playBtn = document.getElementById('playBtn');
+
+  function renderAt(t) {
+    drawAt(t, 16);
+    tReadout.textContent = t.toFixed(1) + ' ms';
+    scrub.value = t;
+  }
+
+  function frame(now) {
+    if (!playing) return;
+    if (lastFrame === null) lastFrame = now;
+    const dt = now - lastFrame;
+    lastFrame = now;
+    tMs += dt * (DURATION_MS / (PLAYBACK_SECONDS * 1000));
+    if (tMs >= DURATION_MS) { tMs = 0; resetState(); }
+    renderAt(tMs);
+    requestAnimationFrame(frame);
+  }
+
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) { lastFrame = null; requestAnimationFrame(frame); }
+  });
+  scrub.addEventListener('input', () => {
+    playing = false; playBtn.textContent = 'Play';
+    tMs = Number(scrub.value);
+    resetState();
+    renderAt(tMs);
+  });
+
+  renderAt(0);
+});
+</script>

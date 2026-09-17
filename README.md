@@ -26,6 +26,8 @@ Mean synaptic weight at the targeted synapses dropped 89% over the 12 pairing tr
 ### 3. Looming-escape reflex
 A second, independent circuit: the real looming-detector neurons (LC4, 104 neurons; LPLC2, 210 neurons) reliably fire the real **Giant Fiber** — the fly's fastest escape command neuron — with a 1.7–4.0ms first-spike latency, consistent with the literature's characterization of the GF pathway as one of the fastest visual-to-motor circuits known in any animal. See [`Drosophila_brain_model/looming_escape.py`](Drosophila_brain_model/looming_escape.py).
 
+**[→ Watch it happen](https://claude.ai/code/artifact/dccecdb7-020e-4bcf-94e3-dc410c2ca4fa)** — same real-position animation, this time watching an escape command fire in under 3 milliseconds.
+
 ## How it's built
 
 - **Simulator:** [Brian2](https://brian2.readthedocs.io/), leaky integrate-and-fire neurons, real synapse counts from EM reconstruction as connection weights.

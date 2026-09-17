@@ -20,7 +20,15 @@ lc4_idx = sorted(flyid2i[x] for x in lc4_ids if x in flyid2i)
 lplc2_idx = sorted(flyid2i[x] for x in lplc2_ids if x in flyid2i)
 gf_idx = sorted(flyid2i[x] for x in gf_ids if x in flyid2i)
 loom_idx = lc4_idx + lplc2_idx
+lc4_arr = np.array(lc4_idx)
+lplc2_arr = np.array(lplc2_idx)
 print(f'>>> LC4: {len(lc4_idx)}, LPLC2: {len(lplc2_idx)}, Giant Fiber (DNp01): {len(gf_idx)} -> {gf_idx}')
+
+ann_pos = ann.drop_duplicates('root_id').set_index('root_id')[['pos_x', 'pos_y']]
+comp_ids = df_comp.index.to_numpy()
+pos_df = ann_pos.reindex(comp_ids)
+pos_x = pos_df['pos_x'].to_numpy()
+pos_y = pos_df['pos_y'].to_numpy()
 
 t0 = time.time()
 neu, syn, spk_mon = create_model(config['path_comp'], config['path_con'], params)
@@ -39,7 +47,15 @@ r_stim = 150 * Hz
 gf_arr = np.array(gf_idx)
 
 
-def run_trial():
+def category_for(idx_arr):
+    cat = np.full(idx_arr.shape, 'other', dtype=object)
+    cat[np.isin(idx_arr, lc4_arr)] = 'lc4'
+    cat[np.isin(idx_arr, lplc2_arr)] = 'lplc2'
+    cat[np.isin(idx_arr, gf_arr)] = 'gf'
+    return cat
+
+
+def run_trial(capture=False):
     neu.v = params['v_0']
     neu.g = 0 * mV
     stim.rate = 0 * Hz
@@ -51,7 +67,19 @@ def run_trial():
     trial_t = (np.asarray(spk_mon.t / second)[mask] - t_start) * 1000
     gf_spikes = trial_i[np.isin(trial_i, gf_arr)]
     gf_times = trial_t[np.isin(trial_i, gf_arr)]
-    return len(trial_i), gf_spikes, gf_times
+
+    cap = None
+    if capture:
+        cats = category_for(trial_i)
+        has_pos = ~np.isnan(pos_x[trial_i])
+        cap = {
+            'i': trial_i[has_pos].tolist(),
+            't_ms': np.round(trial_t[has_pos], 2).tolist(),
+            'cat': cats[has_pos].tolist(),
+            'x': pos_x[trial_i][has_pos].tolist(),
+            'y': pos_y[trial_i][has_pos].tolist(),
+        }
+    return len(trial_i), gf_spikes, gf_times, cap
 
 
 # warm-up (same transient as the mushroom body experiment)
@@ -60,9 +88,16 @@ for _ in range(3):
 print('>>> warm-up complete')
 
 n_reps = 5
+capture = None
 for r in range(n_reps):
-    total, gf_spikes, gf_times = run_trial()
+    total, gf_spikes, gf_times, cap = run_trial(capture=(r == n_reps - 1))
+    if cap is not None:
+        capture = cap
     gf0 = gf_times[gf_spikes == gf_idx[0]] if len(gf_idx) > 0 else []
     gf1 = gf_times[gf_spikes == gf_idx[1]] if len(gf_idx) > 1 else []
     print(f'trial {r+1}: {total} total spikes brain-wide, Giant Fiber L={len(gf0)} spikes, R={len(gf1)} spikes'
           f'  (first GF spike at {round(float(gf_times.min()),1) if len(gf_times) else "never"} ms)')
+
+with open('../looming_capture.json', 'w') as f:
+    json.dump(capture, f)
+print(f'>>> wrote looming_capture.json ({len(capture["i"])} spikes)')
