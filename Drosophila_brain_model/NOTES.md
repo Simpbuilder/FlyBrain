@@ -223,6 +223,18 @@ thousands of KCs through several synapses of amplification. A clean,
 complete diagnosis - not a bug, a calibration mismatch between two
 different intended use patterns of the same model.
 
+## Milestone 7: one more diagnostic, then stopping here
+Tried an adapting (exponentially decaying) drive instead of constant
+rate - no effect, recruitment stayed ~64% regardless of peak rate.
+Tried a "sniff" approach: a brief 12ms real-PN identification trial to
+find which KCs respond reliably (>=4/8 reps), then use that small,
+genuinely sparse set (87 KCs for odor A, 134 for odor B - much closer
+to real sparse coding). But the two sets still overlapped 92% - these
+two specific 4-glomeruli picks just converge on mostly the same
+"easily excitable" KCs, which duration/dynamics tuning can't fix.
+Stopping the calibration hunt here (per token-budget request) -
+milestone 6's diagnosis stands as the honest final account.
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.
