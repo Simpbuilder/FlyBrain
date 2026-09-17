@@ -193,6 +193,24 @@ experiment is a genuine, informative negative result about what's
 needed for odor-specific memory in a spiking model, not a
 contradiction of the main finding.
 
+**One more check, to be sure this isn't a data bug:** verified the
+real APL neuron (the giant, well-known feedback inhibitory interneuron
+that normally enforces KC sparseness in a real fly, one per
+hemisphere) is present and correctly wired - 5,194 real APL->KC
+synapses, all inhibitory (sign=-1), and 5,215 real KC->APL synapses,
+all excitatory (sign=+1), exactly matching known biology. So the
+runaway recruitment isn't a connectome data problem or a broken
+inhibitory circuit - APL's own synaptic weights are normal-scale real
+connectome weights, while the external stimulation used to "guarantee
+activation" of directly-driven sensory neurons is roughly 250x a
+typical single real synaptic event. That's fine when driving 20-100
+sensory neurons directly (the paper's original use case, and what
+every other experiment in this repo does), but it overwhelms APL's
+normal-scale negative feedback once applied broadly enough to recruit
+thousands of KCs through several synapses of amplification. A clean,
+complete diagnosis - not a bug, a calibration mismatch between two
+different intended use patterns of the same model.
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.
