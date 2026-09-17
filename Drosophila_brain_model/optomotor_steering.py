@@ -48,6 +48,18 @@ for _ in range(3):
     run_trial()
 print('>>> warm-up complete')
 
-for r in range(5):
+n_reps = 15
+spikes_list, first_ts = [], []
+for r in range(n_reps):
     n, first_t = run_trial()
-    print(f'trial {r+1}: DNg46 spikes = {n}, first spike at {first_t} ms' if first_t else f'trial {r+1}: DNg46 silent')
+    spikes_list.append(n)
+    if first_t is not None:
+        first_ts.append(first_t)
+    print(f'trial {r+1:2d}: DNg46 spikes = {n}, first spike at {first_t} ms' if first_t else f'trial {r+1}: DNg46 silent')
+
+import numpy as np
+print()
+print(f'=== summary across {n_reps} trials ===')
+print(f'DNg46 fired in {sum(1 for s in spikes_list if s > 0)}/{n_reps} trials')
+print(f'spikes/trial: {np.mean(spikes_list):.1f} +/- {np.std(spikes_list):.1f}')
+print(f'first-spike latency: {np.mean(first_ts):.1f} +/- {np.std(first_ts):.1f} ms (range {min(first_ts):.1f}-{max(first_ts):.1f})')

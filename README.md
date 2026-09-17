@@ -32,6 +32,9 @@ A second, independent circuit: the real looming-detector neurons (LC4, 104 neuro
 
 **[→ Watch it happen](https://claude.ai/code/artifact/dccecdb7-020e-4bcf-94e3-dc410c2ca4fa)** — same real-position animation, this time watching an escape command fire in under 3 milliseconds.
 
+### 4. Optomotor steering reflex
+A fourth independent circuit: real wide-field motion-sensitive neurons (HS/VS, 38 neurons) reliably drive the real descending steering neuron **DNg46** — the real basis of how a fly corrects its course when the whole visual field slides past. 5/5 trials, 3-14ms latency. See [`Drosophila_brain_model/optomotor_steering.py`](Drosophila_brain_model/optomotor_steering.py).
+
 ## How it's built
 
 - **Simulator:** [Brian2](https://brian2.readthedocs.io/), leaky integrate-and-fire neurons, real synapse counts from EM reconstruction as connection weights.
