@@ -72,12 +72,18 @@ trn_stim = np.arange(len(pnA_idx) + len(pnB_idx), len(stim_targets))
 net = Network(neu, syn, spk_mon, stim, drive)
 
 
-pulse_ms = 15 * ms  # brief odor pulse - real KC sparse coding depends on a
-                     # short coincidence window, not sustained drive (a
-                     # continuous 300ms drive lets even weakly-coincident
-                     # KCs slowly accumulate enough charge to fire, which
-                     # destroys the sparseness that makes different odors
-                     # distinguishable - see sparsity_sweep.py)
+# a brief external pulse doesn't work on its own: this is a fully
+# recurrent whole-brain network, so once the initial cascade starts it
+# keeps propagating on its own for the rest of the 300ms trial even
+# after the external drive stops (tried it - KC recruitment was
+# unchanged, ~64%, because the settling window let the same recurrent
+# cascade develop just a few ms later). the actual fix: define odor
+# identity by which KCs respond EARLY (matching real sparse coincidence
+# detection - real odor identity is read out in the first ~20ms of a
+# response, not from everything that eventually fires over 300ms),
+# while the stimulus and trial can still run their full realistic
+# duration for the MBON readout to develop properly.
+early_cutoff_ms = 20
 
 
 def run_trial(odor_positions, with_heat):
@@ -88,14 +94,14 @@ def run_trial(odor_positions, with_heat):
     if with_heat:
         stim.rate[trn_stim] = r_stim
     t_start = defaultclock.t / second
-    net.run(pulse_ms)
-    stim.rate = 0 * Hz  # pulse over - let the network settle so MBON can respond
-    net.run(t_run - pulse_ms)
+    net.run(t_run)
     mask = np.asarray(spk_mon.t / second) >= t_start
     trial_i = np.asarray(spk_mon.i)[mask]
+    trial_t = (np.asarray(spk_mon.t / second)[mask] - t_start) * 1000
     ppl_mbon_spikes = np.isin(trial_i, ppl_mbon_idx).sum()
     pam_mbon_spikes = np.isin(trial_i, pam_mbon_idx).sum()
-    fired_kc = np.unique(trial_i[np.isin(trial_i, kc_idx)])
+    early_mask = np.isin(trial_i, kc_idx) & (trial_t <= early_cutoff_ms)
+    fired_kc = np.unique(trial_i[early_mask])
     dan_fired = np.isin(trial_i, ppl_dan_idx).sum()
     return ppl_mbon_spikes, pam_mbon_spikes, fired_kc, dan_fired
 

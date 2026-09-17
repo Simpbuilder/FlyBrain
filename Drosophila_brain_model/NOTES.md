@@ -121,14 +121,62 @@ sensory neurons) is strong enough to oversaturate propagation once
 combined across 8 glomeruli. A more careful drive-strength calibration
 would be needed to reproduce realistic sparsity; not done here.
 
+## Milestone 6: the full closed loop, and a genuine unresolved finding
+Combined all three upgrades into one experiment (`full_closed_loop.py`):
+real PN-driven odors (2 disjoint sets of 4 named glomeruli each, no
+hand-picked KCs), real TRN-driven punishment (no experimenter flag),
+and compartment-restricted depression (PPL-dominant MBONs only).
+
+**Compartment specificity held perfectly, every time.** PAM-dominant
+MBONs stayed flat (+/-1%) in every version of this experiment,
+regardless of what else was going on. That part of the model is solid.
+
+**Odor specificity did not.** The punished odor (A) and the never-
+paired control odor (B) declined by nearly identical amounts every
+time this was tried:
+- straightforward version: A -44.4%, B -44.9% (odor-blind - clearly wrong)
+- brief 15ms external pulse (tried to limit recruitment): no change at
+  all - this is a fully recurrent whole-brain network, so once the
+  cascade starts, it keeps propagating on its own for the rest of the
+  300ms trial regardless of when the external drive stops. Confirmed
+  via direct comparison, not assumed.
+- restricting "eligible" KCs to only those firing in the first 20ms
+  (closer to how real coincidence detection actually reads out odor
+  identity): recruitment dropped from ~64% to ~25-35% of all KCs
+  (better), but A and B still declined almost identically (-26.7% vs
+  -26.0%) - improved, not fixed.
+
+**Root cause, most likely:** `sparsity_sweep.py` showed KC recruitment
+is essentially independent of PN firing *rate* (10Hz through 150Hz all
+gave ~64%) but highly sensitive to *duration* - meaning it's driven by
+slow temporal summation/recurrent amplification, not genuine multi-
+glomerulus coincidence. The external stimulation weight in this
+codebase (`w_syn * f_poi`, tuned in the original paper for "guaranteed
+activation" of directly-stimulated sensory neurons) makes all 40-50
+real PN neurons in a glomerulus fire almost perfectly synchronously
+from the first millisecond - so even two genuinely different real
+odors look artificially synchronized to downstream KCs, defeating the
+sparse combinatorial coding that would normally keep them apart. This
+wasn't tuned to failure by accident - reducing rate alone doesn't touch
+this because the *reliability* of each spike (not its rate) is what's
+saturating.
+
+**Honestly unresolved.** A real fix needs calibrating the external
+drive to something more like a graded, probabilistic activation of
+real PN neurons (rather than a guaranteed near-instant kick) - a
+legitimate next step, not done here. What IS established: the
+compartment-specificity result (milestone 4/5) doesn't depend on this
+problem at all, since it uses a much sparser hand-picked 150-KC
+ensemble (2.9% of all KCs) that never hits this saturation regime.
+This closed-loop experiment is a genuine, informative negative result
+about what's needed for odor-specific memory, not a contradiction of
+the main finding.
+
 ## Known limitations / honest caveats
-- The full closed-loop version (real PN input odor + real TRN-driven
-  punishment + compartment-specific depression, all at once) has not
-  been run - the three upgrades were validated independently but not
-  yet combined into one experiment.
+- Odor specificity in the fully-real-PN-driven version is not yet
+  achieved - see milestone 6 above for the full honest account.
 - External Poisson drive strength is tuned for "guaranteed activation"
-  rather than calibrated to realistic sparse coding - see PN-driven
-  odor caveat above.
+  rather than calibrated to realistic sparse/probabilistic coding.
 - No compartment-specificity within PPL1 itself (real biology has
   multiple PPL1 subtypes targeting different sub-compartments; this
   model treats all PPL-dominant MBONs as one group).
