@@ -123,13 +123,13 @@ function colorFor(cat) { return catPalette[cat] || '154,134,255'; }
     for (const nid in current.neurons) {
       const n = current.neurons[nid];
       const lastT = glow[nid];
-      let b = 0.25;
+      let b = 0.06;
       if (lastT !== undefined) {
         const age = tMs - lastT;
-        if (age >= 0) b = 0.25 + 0.75 * Math.exp(-age / 55);
+        if (age >= 0) b = 0.06 + 0.94 * Math.exp(-age / 55);
       }
       const [px, py] = toXY(n.x, n.y);
-      const r = 2 + (b - 0.25) * 4;
+      const r = 1.6 + Math.max(0, b - 0.06) * 5;
       ctx.fillStyle = `rgba(${colorFor(n.cat)},${b})`;
       ctx.beginPath();
       ctx.arc(px, py, r, 0, 7);
