@@ -320,6 +320,42 @@ LIF model doesn't have - every KC shares the same v_th), not just
 tuning stimulation timing. Stopping this specific thread here with a
 precise, honest diagnosis rather than a working fix.
 
+## Milestone 11: live dashboard (db-backed, extensible for future sessions)
+Built a live-updating dashboard page, `live_dashboard.html`, published at
+https://claude.ai/code/artifact/96ccd685-09b3-432f-a49a-44b94c4c0268 with
+the `db` runtime capability. It shows a 2D animated view of whichever
+experiment was most recently pushed, plus a scrolling activity log - both
+update automatically for anyone with the page open, no refresh needed.
+
+**How to push a new experiment to it (for this or any future session):**
+1. In the experiment script, after a trial's `spk_mon` has real data, call
+   `dashboard_export.export_for_dashboard(name=..., spk_mon=..., t_start=...,
+   duration_ms=..., pos_x=..., pos_y=..., highlight={category: [brian_ids]})`.
+   This writes a standardized `../dashboard_live.json` - same shape every
+   time, no custom formatting needed. `pos_x`/`pos_y` are brian-index-
+   indexed real coordinate arrays (see any capture script for how to build
+   them from `annotations_783.tsv`). `t_start` must be the plain-float
+   snapshot (`defaultclock.t / second`) taken BEFORE `net.run()` - see the
+   clock-snapshot bug earlier in this file.
+2. Push it live: call the Artifact tool with `action: "write_db"`,
+   `url: "https://claude.ai/code/artifact/96ccd685-09b3-432f-a49a-44b94c4c0268"`,
+   `db_op: "set"`, `collection: "brain_live"`, `doc_id: "current"`,
+   `file_path` pointing at the generated `dashboard_live.json`.
+3. (Optional) Append a log line: read the current `log/feed` doc via
+   `read_db`, add a `{t, msg}` entry to its `entries` array (keep the list
+   short - a handful to a few dozen entries, not unbounded - the db docs
+   the log lives in are single JSON documents, capped at 256KB), and
+   `write_db` it back with `db_op: "set"`.
+
+The silhouette backdrop (`brain_live/silhouette`) is static and shared
+across all experiments - built once by `make_silhouette.py`, no need to
+resend it per experiment.
+
+Document size limit is 256KB per doc - `export_for_dashboard` already
+restricts spike data to just the `highlight` categories (a few hundred
+neurons), not the full 138k-neuron firehose, which keeps exports
+comfortably under that (the looming-escape export was 184KB).
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.

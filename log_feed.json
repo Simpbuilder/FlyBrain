@@ -1,0 +1,5 @@
+{"entries": [
+  {"t": "08:15", "msg": "live dashboard online — db-backed, updates automatically"},
+  {"t": "08:19", "msg": "generated dashboard export pipeline (dashboard_export.py) for future experiments"},
+  {"t": "08:20", "msg": "pushed first live experiment: looming escape (LC4+LPLC2 -> Giant Fiber)"}
+]}
