@@ -290,6 +290,36 @@ connectome, just wired differently - which is itself a small piece of
 evidence the model is capturing something real about circuit
 function, not just noise.
 
+## Milestone 10: chasing the sparse-coding fix further - corrected conclusion
+A systematic grid search (`sparsity_grid_search.py`, 80 combinations of
+drive weight x trial duration) confirmed weight is irrelevant and
+pinned duration as the dominant lever: single 10ms sniffs showed 0-46%
+KC overlap between odor A and B, vs 99%+ by 50ms+. Promising - so built
+`real_sparse_odors.py` to derive each odor's identity from repeated
+10ms sniffs.
+
+First attempt (union across 20 sniffs): overlap 68.8% - worse than a
+single sniff, because union grows unboundedly as more samples are
+added, merging in noise. **Corrected to reliability** (a KC only
+counts if it fires in a majority of independent sniffs, not just once)
+- and this revealed the real problem: at 50% reliability, each odor's
+"identity" shrinks to just 4 KCs, and 3 of those 4 are shared between
+both odors (75% overlap even at that tiny scale). At 70% reliability,
+nothing is reliable enough to count at all.
+
+**Corrected conclusion:** the earlier low single-sniff overlap wasn't
+genuine odor-specific discriminability - it was a small-sample
+artifact of two random draws from mostly the same small pool of
+generically excitable, low-threshold Kenyon cells not happening to
+intersect much by chance. There is a real, identifiable "fast
+responder" KC population that fires to strong drive from *either*
+odor's glomeruli, and it's largely what a short sniff window actually
+captures. A real fix would need addressing that underlying excitability
+asymmetry directly (e.g. per-KC threshold heterogeneity, which this
+LIF model doesn't have - every KC shares the same v_th), not just
+tuning stimulation timing. Stopping this specific thread here with a
+precise, honest diagnosis rather than a working fix.
+
 ## Known limitations / honest caveats
 - Odor specificity in the fully-real-PN-driven version is not yet
   achieved - see milestone 6 above for the full honest account.
